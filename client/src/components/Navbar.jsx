@@ -91,7 +91,7 @@ export const Navbar = (props) => {
           
           <Link to='/' className={`${selectedItem === 0 ? 'text-purple-700':''} flex gap-1 min-w-fit items-center hover:text-purple-500 cursor-pointer`}>
             <ImBooks className="w-6 h-6"/>
-            <p>Books</p>
+            <p>Projects</p>
           </Link>
 
           <span

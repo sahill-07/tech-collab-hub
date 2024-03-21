@@ -27,15 +27,9 @@ class UserDbService {
     }
 
     static async addNewUser(data){
-        const result = await User.find({USER_EMAIL: data.email});
-        let user = {
-            USER_EMAIL : data.email,
-            USER_NAME : data.USER_NAME,
-        };
-        if(result.length === 0){
-            user = await new User({...user});
+
+            const user = await new User({...data});
             const savedNote = await user.save();
-        }
     }
 
 

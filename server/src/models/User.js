@@ -2,21 +2,22 @@ const { mongoose } = require("mongoose");
 const DATABASE_TABLE_NAME = "user";
 
 const userSchema = new mongoose.Schema({
-    USER_NAME : {
+    username : {
         type: String,
         required: true
     },
-    USER_EMAIL : {
+    githublink : {
         type : String,
         required: true,
         unique: true,
     },
-    REPOSITORIES : [],
-    BOOKS : [],
-    LINKS : [],
-    PROFILE_PIC_URL : {
+    tags : [],
+    collegeName : {
         type: String,
     },
+    semester : {
+        type : String
+    }
 
 })
 

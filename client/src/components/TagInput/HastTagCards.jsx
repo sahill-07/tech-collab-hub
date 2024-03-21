@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
 
-export const HastTagCards = (props) => {
+export const HastTagCards = ({hashTag, hashTags, setHashTags, forDisplay, keys}) => {
   const removeTag = (e) => {
     e.preventDefault();
-    let newArray = props.hashTags;
-    newArray.splice(props.keys, 1);
-    props.setHashTags([...newArray]);
+    let newArray = hashTags;
+    newArray.splice(keys, 1);
+    setHashTags([...newArray]);
   };
 
   
@@ -14,8 +14,8 @@ export const HastTagCards = (props) => {
   return (
     <>
        <div className="flex flex-row gap-1 bg-blue-500 text-white max-w-fit px-2 rounded-lg">
-        <h1 className="break-all text-base"> #{props.hashTag} </h1>
-        <button onClick={removeTag} className={`${props.forDisplay ? 'hidden':'block'}`}>
+        <h1 className="break-all text-base"> {hashTag} </h1>
+        <button onClick={removeTag} className={`${forDisplay ? 'hidden':'block'}`}>
           <div className={`flex flex-col content-center justify-center`}>
             <AiFillCloseCircle />
           </div>
@@ -28,3 +28,5 @@ export const HastTagCards = (props) => {
 HastTagCards.defaultProps = {
   forDisplay: false
 }
+
+export default HastTagCards;
