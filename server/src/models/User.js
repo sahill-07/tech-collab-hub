@@ -21,7 +21,11 @@ const userSchema = new mongoose.Schema({
     },
     semester : {
         type : String
-    }
+    },
+    generated_tags : {
+        type : String,
+    },
+    knn : [],
 
 })
 
