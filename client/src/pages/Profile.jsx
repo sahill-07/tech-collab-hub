@@ -4,56 +4,82 @@ import { Activities } from '../components/Profile_Page_Components/Activities';
 import { LinksSection } from '../components/Profile_Page_Components/LinksSection';
 import { UserDetails } from '../components/Profile_Page_Components/UserDetails';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getUserDetails, getUserDetailsUsingid, postNewUser } from "../http";
 import Lottie from 'lottie-react';
 import loading_animation from '../assets/loading.json';
+import { useDispatch, useSelector } from "react-redux";
+import { setUserSlice } from "../store/UserSlice";
 
 
 export const Profile = () => {
   const location = useLocation();
-  const [profiledata, setProfiledata] = useState(null);
+  const usersliceData = useSelector((state)=> state.UserSlice);
   const [isLogged, setIsLogged] = useState(true);
   const auth = getAuth();
+  const [isSignOutButtonClicked, setIsSignOutButtonClicke] = useState(false);
+  const dispatch = useDispatch();
+  const navigate =useNavigate();
 
   const signOutF = ()=>{
-    signOut(auth);
+    setIsSignOutButtonClicke(true);
+    dispatch(setUserSlice({
+      isloggedIn : null,
+      isAlreadyAUser : null,
+      email : null,
+      username : null,
+      githublink : null,
+      tags : [],
+      semester : null,
+    }))
   }
+
+  useEffect(()=>{
+    if(usersliceData.username === null && isSignOutButtonClicked){
+      setIsSignOutButtonClicke(false);
+      signOut(auth);
+    }
+  }, [usersliceData]);
 
 
   useEffect(() => {
-    const path = location.pathname.split('/').slice(-1);
-    if(location.pathname.split('/')[1] === 'profile'){
+    const isProfilePath = location.pathname.includes('profile');
+    if(isProfilePath){
       onAuthStateChanged(getAuth(), async(user)=>{
-        if(user !== null && location.pathname.split('/')[1] === 'profile'){
+        if(user !== null){
           setIsLogged(true);
-          getUserDetails().then(res=>{
-            if(res.data === null){
-              const userName = user.displayName;
-              const userEmail = user.email;
-              postNewUser({
-                USER_NAME : userName,
-                USER_EMAIL : userEmail
-              })
-
-              setProfiledata({
-                USER_NAME : user.displayName,
-                USER_EMAIL : user.email,
-                REPOSITORIES : [],
-                BOOKS : [],
-                LINKS : []
-              })
-            }else
-            setProfiledata(res.data);
-          })
+          console.log('login h');
+          dispatch(setUserSlice({isloggedIn : true}));
+          if(usersliceData.username === null){
+            getUserDetails().then(res=>{
+              if(res.data === null){
+                navigate('/auth');
+              }else
+              // setProfiledata(res.data);
+              dispatch(setUserSlice(res.data));
+              dispatch(setUserSlice({isAlreadyAUser : true}));
+            })
+          }
         }
-        else if(user === null) setIsLogged(false);
-      })
-    }else{
-      getUserDetailsUsingid(path).then(res=>{
-        setProfiledata(res.data);
+        else if(user === null) {
+          dispatch(setUserSlice({
+            isloggedIn : null,
+            isAlreadyAUser : null,
+            email : null,
+            username : null,
+            githublink : null,
+            tags : [],
+            semester : null,
+          }))
+          navigate('/auth');
+        }
       })
     }
+    // else{
+    //   getUserDetailsUsingid(path).then(res=>{
+    //     setProfiledata(res.data);
+    //   })
+    // }
 
   }, [])
   return (
@@ -74,21 +100,21 @@ export const Profile = () => {
         </section>
 
         {
-          profiledata === null && <Lottie animationData={loading_animation} className="h-52 w-52"/>
+          usersliceData.username === null && <Lottie animationData={loading_animation} className="h-52 w-52"/>
         }
 
-        {profiledata && profiledata !== null && <section
+        {usersliceData.username !== null && <section
           id="information-section"
           className="grid sm:grid-cols-1 md:grid-cols-3 gap-6 p-4"
         >
           <div id="profile" className="flex bg-white rounded-lg p-3 shadow-lg">
-            <Profile1 data={profiledata} />
+            <Profile1 username={usersliceData.username} />
           </div>
           <div
             id="user-details"
             className="bg-white rounded-lg p-3 md:col-span-2 "
           >
-            <UserDetails data={profiledata} />
+            <UserDetails email={usersliceData.email} githublink={usersliceData.githublink} username={usersliceData.username} collegeName={usersliceData.collegeName} semester={usersliceData.semester} tags={usersliceData.tags} />
           </div>
           {/* <div id="user-link" className="bg-white rounded-lg p-3 ">
             <LinksSection data={profiledata} />
@@ -97,7 +123,7 @@ export const Profile = () => {
             id="user-activity"
             className="bg-white rounded-lg p-3 md:col-span-3"
           >
-            <Activities data={profiledata} />
+            {/* <Activities data={usersliceData} /> */}
           </div>
         </section>}
 

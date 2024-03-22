@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "../styles/Navbar.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from '../assets/logo.png'
 import { ImBooks } from "react-icons/im";
 import { MdGroups3 } from "react-icons/md";
@@ -9,9 +9,12 @@ import { useLocation } from "react-router-dom";
 import { IoLogInSharp } from 'react-icons/io5'
 import { GoogleAuthProvider, getAuth, onAuthStateChanged, signInWithRedirect } from 'firebase/auth';
 import loading_animation from '../assets/Hourglass.gif';
-import { postNewUser } from "../http";
+import { useDispatch} from "react-redux";
+import { setUserSlice } from "../store/UserSlice";
 
 export const Navbar = (props) => {
+  const dispatch = useDispatch();
+
   const [selectedItem, setSelectedItem] = useState(0);
   const stickyRef = useRef(null);
   const [isSticky, setIsSticky] = useState(false);
@@ -41,33 +44,9 @@ export const Navbar = (props) => {
   }, []);
 
   const provider = new GoogleAuthProvider();
+  const navigate = useNavigate();
   const login = ()=>{  
-    var currentUser =  getAuth().currentUser;
-    var auth =  getAuth();
-      if(currentUser !== null){
-        console.log(currentUser.displayName);
-      }else{
-      signInWithRedirect(auth, provider)
-        .then((result) => {
-          // This gives you a Google Access Token. You can use it to access the Google API.
-          const credential = GoogleAuthProvider.credentialFromResult(result);
-          const token = credential.accessToken;
-          // The signed-in user info.
-          const user = result.user;
-          // ...
-        }).catch((error) => {
-          // Handle Errors here.
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          // The email of the user's account used.
-          const email = error.customData.email;
-          // The AuthCredential type that was used.
-          const credential = GoogleAuthProvider.credentialFromError(error);
-          console.log(errorMessage);
-          // ...
-          // console.log("error code is " + errorCode);
-        });
-      }
+    navigate('/auth')
   }
 
   useEffect(() => {
@@ -75,7 +54,18 @@ export const Navbar = (props) => {
       setIsAuthLoading(false)
       if (user !== null) {
         setIsLoggedIn(true);
+        dispatch(setUserSlice({isloggedIn : true}));
       } else {
+        dispatch(setUserSlice({
+          isloggedIn : null,
+          isAlreadyAUser : null,
+          email : null,
+          username : null,
+          githublink : null,
+          tags : [],
+          semester : null,
+        }))
+        dispatch(setUserSlice({isloggedIn : false}));
         setIsLoggedIn(false);
       }
     });

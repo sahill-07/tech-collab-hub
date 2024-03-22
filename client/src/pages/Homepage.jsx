@@ -10,18 +10,15 @@ import { useSelector } from "react-redux";
 export const Homepage = () => {
 
   const {COLLEGE_NAME} = useSelector((state)=>state.BookSearchSlice);
-  const [shouldFormOpen, setShouldFormOpen] = useState(false);
   const location = useLocation();
   useEffect(()=>{
     const searchParams = new URLSearchParams(location.search);
     const code = searchParams.get('hashTags');
     console.log(code);
-    if(code) setShouldFormOpen(false);
-    else setShouldFormOpen(true);
   },[]);
   return (
     <>
-        <section  className={`z-0 ${shouldFormOpen ? 'blur-md':''}`}>
+        <section  className={`z-0 `}>
         <div className="background-gradient  rounded-b-3xl flex flex-col-reverse md:grid md:grid-cols-2 z-0 shadow-lg pb-20 md:pb-5">
           <div className="flex gap-3 justify-center p-4 flex-col">
             <h1 className="text-white text-5xl font-bold">Tech Collab Hub</h1>

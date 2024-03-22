@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    isloggedIn : false,
-    isAlreadyAUser : false,
+    isloggedIn : null,
+    isAlreadyAUser : null,
     email : null,
     username : null,
     githublink : null,
@@ -16,31 +16,31 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
       setUserSlice: (state, action) => {
-        if(action.payload.isloggedIn && action.payload.hasOwnProperty('isloggedIn') && action.payload.isloggedIn !== null){
+        if(action.payload.isloggedIn !== undefined && action.payload.hasOwnProperty('isloggedIn')){
           state.isloggedIn = action.payload.isloggedIn;
         //   localStorage.setItem('COLLEGE_NAME', action.payload.COLLEGE_NAME);
         }
-        if(action.payload.isAlreadyAUser && action.payload.hasOwnProperty('isAlreadyAUser') &&  action.payload.isAlreadyAUser !== null){
+        if(action.payload.isAlreadyAUser !== undefined && action.payload.hasOwnProperty('isAlreadyAUser')){
           state.isAlreadyAUser = action.payload.isAlreadyAUser;
         //   localStorage.setItem('BRANCH', action.payload.BRANCH);
         }
-        if(action.payload.email && action.payload.hasOwnProperty('email') &&  action.payload.email !== null){
+        if(action.payload.email !== undefined && action.payload.hasOwnProperty('email')){
           state.email = action.payload.email;
         //   localStorage.setItem('BRANCH', action.payload.BRANCH);
         }
-        if(action.payload.username && action.payload.hasOwnProperty('username') &&  action.payload.username !== null){
+        if(action.payload.username !== undefined && action.payload.hasOwnProperty('username')){
           state.username = action.payload.username;
         //   localStorage.setItem('BRANCH', action.payload.BRANCH);
         }
-        if(action.payload.githublink && action.payload.hasOwnProperty('githublink') &&  action.payload.githublink !== null){
+        if(action.payload.githublink !== undefined && action.payload.hasOwnProperty('githublink')){
           state.githublink = action.payload.githublink;
         //   localStorage.setItem('BRANCH', action.payload.BRANCH);
         }
-        if(action.payload.semester && action.payload.hasOwnProperty('semester') &&  action.payload.semester !== null){
+        if(action.payload.semester !== undefined && action.payload.hasOwnProperty('semester')){
           state.semester = action.payload.semester;
         //   localStorage.setItem('BRANCH', action.payload.BRANCH);
         }
-        if(action.payload.tags && action.payload.hasOwnProperty('tags') &&  action.payload.tags !== null){
+        if(action.payload.tags !== undefined && action.payload.hasOwnProperty('tags')){
           state.tags = action.payload.tags;
         //   localStorage.setItem('BRANCH', action.payload.BRANCH);
         }
