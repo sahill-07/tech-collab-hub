@@ -29,6 +29,7 @@ const api = async (endpoint, data,method)=>{
         }catch(err){
             console.log("error aaya h" + err);
             return {
+                status : 500,
                 data: {
                     success: false
                 }

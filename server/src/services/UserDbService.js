@@ -30,6 +30,7 @@ class UserDbService {
 
             const user = await new User({...data});
             const savedNote = await user.save();
+            console.log(savedNote);
     }
 
 

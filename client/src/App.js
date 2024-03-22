@@ -18,16 +18,16 @@ import LoginForm from './pages/LoginForm';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   return (
     <>
     <Router>
       <Routes>
-      <Route exact path="/" element={isLoggedIn ? <Homepage/>:<LoginForm/>}>
+      <Route exact path="/" element={<Homepage/>}>
         <Route exact path='/' element={<Books/>}/>
         <Route exact path='/projects' element={<Projects/>}/>
         <Route exact path='/profile' element={<Profile/>}/>
       </Route>
+      <Route exact path='/auth' element={<LoginForm/>}/>
       <Route exact path='/addBook' element={<AddBook/>}/>
       <Route exact path='bookdetail/:id' element={<BookDetail/>}/>
       <Route exact path='/projects/projectdetail/:id' element={<ProjectDetail/>}/>

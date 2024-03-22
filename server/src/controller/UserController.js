@@ -44,7 +44,7 @@ exports.user_controller = {
     getMyProfile : async (req, res)=>{
         try{
             const email = req.body.email;
-            const details = await UserDb.findOne({USER_EMAIL: email});
+            const details = await UserDb.findOne({email: email});
             res.status(200).json(details);
         }catch(err){
             res.status(400).json({

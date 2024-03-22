@@ -2,14 +2,19 @@ import React, { useEffect, useState } from 'react'
 import googleIcon from '../../../assets/google.png';
 import "../../../config/firebase-config";
 import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithRedirect } from "firebase/auth";
+import { useDispatch } from 'react-redux';
+import { setUserSlice } from '../../../store/UserSlice';
 
 const SignInWithGoogle = ({setIsGoogleSignInDone, isGoogleSignInDone}) => {
   const provider = new GoogleAuthProvider();
+  const dispatch = useDispatch();
 
   useEffect(()=>{
     onAuthStateChanged(getAuth(), async (user) => {
+      // console.log(user.em);
       if (user !== null) {
-        setIsGoogleSignInDone(true);
+        dispatch(setUserSlice({email : user.email}));
+        setIsGoogleSignInDone(user.email);
       }else {
         setIsGoogleSignInDone(false);
       }

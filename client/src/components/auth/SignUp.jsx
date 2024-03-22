@@ -14,8 +14,15 @@ import { getUserDetails, postNewUser } from "../../http";
 import AddTagInput from '../TagInput/AddTagInput'
 import HastTagCards from "../TagInput/HastTagCards";
 import { FaUniversity } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserSlice } from "../../store/UserSlice";
+import { useNavigate } from "react-router-dom";
 
 export const SignUp = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const userslicedata = useSelector((state)=>state.UserSlice);
+
   const [isAlreadyAUser, setIsAlreadyAUser] = useState(true);
   const [isGoogleSignInDone, setIsGoogleSignInDone] = useState(false);
 
@@ -64,16 +71,28 @@ export const SignUp = () => {
   },[githubLink])
 
   useEffect(()=>{
-    if(isGoogleSignInDone){
+    if(isGoogleSignInDone !== false){
+      dispatch(setUserSlice({isloggedIn : true}));
       getUserDetails().then(res=>{
         if(res.status === 200){
           console.log(res.data);
-          if(res.data !== null) setIsAlreadyAUser(true);
-          else setIsAlreadyAUser(false);
+          if(res.data !== null) {
+            dispatch(setUserSlice({isAlreadyAUser : true}));
+            dispatch(setUserSlice(res.data));
+            setIsAlreadyAUser(true);
+            // console.log('done');
+            
+          }
+          else {
+            setIsAlreadyAUser(false);
+            dispatch(setUserSlice({isAlreadyAUser : false}))
+          }
         }else {
           console.error(res)
         }
       })
+    }else {
+      dispatch(setUserSlice({isloggedIn : false}))
     }
   },[isGoogleSignInDone])
 
@@ -92,20 +111,24 @@ export const SignUp = () => {
     let json = {
       username : userName,
       githublink : githubLink,
-      tags: hashTags,
-      
+      tags: hashTags,  
+      email : isGoogleSignInDone  
     };
     if(isUserAClgStudent === 'true') json = {...json, semester};
     if(isUserAClgStudent === 'true') json = {...json, collegeName};
-    console.log(json);
     postNewUser(json).then(res=>{
+      console.log(res.status);
       if(res.status === 200){
         setIsAlreadyAUser(true);
+        dispatch({isAlreadyAUser : true});
       }
     })
-
-    console.log(json);
   }
+  useEffect(()=>{
+
+    if(userslicedata.isAlreadyAUser === true)
+      navigate('/');
+  },[userslicedata])
   
   return (
     <>
@@ -117,13 +140,13 @@ export const SignUp = () => {
         <form onSubmit={submitForm} className="flex flex-col gap-4">
           <span>
             <span className="flex gap-1 items-center flex-row flex-wrap">
-              <IoCheckmarkDoneCircle className={`w-7 h-7 ${isGoogleSignInDone ? 'text-green-600':'text-gray-500'}`}/>
-              <Typography  variant="h6" gutterBottom color={`${isGoogleSignInDone ? 'green':'GrayText'}`}> Step 1. Login With Google </Typography>
+              <IoCheckmarkDoneCircle className={`w-7 h-7 ${isGoogleSignInDone !== false ? 'text-green-600':'text-gray-500'}`}/>
+              <Typography  variant="h6" gutterBottom color={`${isGoogleSignInDone !== false ? 'green':'GrayText'}`}> Step 1. Login With Google </Typography>
             </span>
             <SignInWithGoogle setIsGoogleSignInDone={setIsGoogleSignInDone} isGoogleSignInDone={isGoogleSignInDone}/>
           </span>
           <hr/>
-          <span className={`flex flex-col gap-4 ${isGoogleSignInDone && !isAlreadyAUser ? 'opacity-100':'opacity-40'}`}>
+          <span className={`flex flex-col gap-4 ${isGoogleSignInDone !== false && !isAlreadyAUser ? 'opacity-100':'opacity-40'}`}>
           <Typography variant="h6" gutterBottom color='GrayText'> Step 2. Please fill this details </Typography>
           <MyTextField endIcon={<FaGithubSquare/>} label='GithubLink' setVariable={setGithubLink} variable={githubLink} iserror={isErrorInGithubLink} errormsg={messageForWrongGithubLink} isDisabled={isAlreadyAUser || !isGoogleSignInDone} />
           <MyTextField endIcon={<CgUser/>} label='User Name' setVariable={setUserName} variable={userName} isDisabled={true}/>
@@ -136,7 +159,7 @@ export const SignUp = () => {
           <MyRadioGroup radioOptions={radioGroupOptions} radioGroupTitle={radioGroupTitle} setValue={setIsUserAClgStudent} value={isUserAClgStudent} isDisabled={isAlreadyAUser || !isGoogleSignInDone}/>
           {isUserAClgStudent === 'true' && <MyTextField endIcon={<FaUniversity />} label={'Enter Your College Name'} variable={collegeName} setVariable={setCollegeName}/>}
           {isUserAClgStudent === 'true' && <MySelectBox semester={semester} setSemester={setSemester} options={semesterSelectOptions} label={selectSemesterLabel}/>}
-          <HalfIconHalfButton buttonIcon={<IoMdLogIn/>} buttonName='Login' isDisabled={isAlreadyAUser || !isGoogleSignInDone}/>
+          <HalfIconHalfButton buttonIcon={<IoMdLogIn/>} buttonName='Login' isDisabled={isAlreadyAUser || isGoogleSignInDone === false}/>
           </span>
         </form>
       </div>
