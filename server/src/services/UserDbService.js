@@ -158,7 +158,7 @@ class knearest {
                 }
             }
             });
-        // console.log(finalmatrix);
+        console.log(finalmatrix);
         return finalmatrix[myemail];
 
     }

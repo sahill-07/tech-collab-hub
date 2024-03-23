@@ -120,7 +120,7 @@ export const SignUp = () => {
       console.log(res.status);
       if(res.status === 200){
         setIsAlreadyAUser(true);
-        dispatch({isAlreadyAUser : true});
+        dispatch(setUserSlice({isAlreadyAUser : true}));
       }
     })
   }
@@ -135,7 +135,7 @@ export const SignUp = () => {
       <div className="flex flex-col gap-5">
         <div>
           <h1 className="text-4xl font-semibold">SignUp</h1>
-          <p>After SignUp you can upload and see images</p>
+          <p>After SignUp you can see projects</p>
         </div>
         <form onSubmit={submitForm} className="flex flex-col gap-4">
           <span>

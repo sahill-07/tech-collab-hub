@@ -17,7 +17,7 @@ exports.user_controller = {
 
     postNew : async (req, res)=>{
         try{
-            UserDbService.addNewUser(req.body);
+            await UserDbService.addNewUser(req.body);
             
             res.status(200);
             res.json({success: true});
