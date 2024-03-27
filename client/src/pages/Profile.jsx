@@ -42,46 +42,6 @@ export const Profile = () => {
   }, [usersliceData]);
 
 
-  useEffect(() => {
-    const isProfilePath = location.pathname.includes('profile');
-    if(isProfilePath){
-      onAuthStateChanged(getAuth(), async(user)=>{
-        if(user !== null){
-          setIsLogged(true);
-          console.log('login h');
-          dispatch(setUserSlice({isloggedIn : true}));
-          if(usersliceData.username === null){
-            getUserDetails().then(res=>{
-              if(res.data === null){
-                navigate('/auth');
-              }else
-              // setProfiledata(res.data);
-              dispatch(setUserSlice(res.data));
-              dispatch(setUserSlice({isAlreadyAUser : true}));
-            })
-          }
-        }
-        else if(user === null) {
-          dispatch(setUserSlice({
-            isloggedIn : null,
-            isAlreadyAUser : null,
-            email : null,
-            username : null,
-            githublink : null,
-            tags : [],
-            semester : null,
-          }))
-          navigate('/auth');
-        }
-      })
-    }
-    // else{
-    //   getUserDetailsUsingid(path).then(res=>{
-    //     setProfiledata(res.data);
-    //   })
-    // }
-
-  }, [])
   return (
     <>
       {isLogged && <section className="bg-gray-100">

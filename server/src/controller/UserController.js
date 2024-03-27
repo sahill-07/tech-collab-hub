@@ -51,5 +51,32 @@ exports.user_controller = {
                 success: false
             })
         }
+    },
+
+    getRecommendedUser : async (req, res)=>{
+        try{
+            const email = req.body.email;
+            const details = await UserDb.findOne({ email: email }, { knn: 1, _id: 0 });
+            const knn = details.knn;
+            const pipeline = [
+                { $match: { email: { $in: knn } } },
+                { $project: { knn: 0, generated_tags : 0 } },
+            ]
+            const userdetails = await UserDb.aggregate(pipeline);
+            const finalknn = [];
+            if(userdetails.length > 0){
+                for(let email of knn){
+                    for(let userdetail of userdetails){
+                        if(userdetail.email === email)
+                            finalknn.push(userdetail)
+                    }
+                }
+            }
+            res.status(200).json(finalknn);
+        }catch(err){
+            res.status(500).json({
+                success: false
+            })
+        }
     }
 }

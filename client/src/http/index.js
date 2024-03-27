@@ -1,6 +1,9 @@
 import { getAuth } from "firebase/auth";
 import '../config/firebase-config'
-import axios from "axios"
+import { store } from '../store/index'
+import axios, { AxiosError } from "axios"
+import { setBasicUtilsSlice } from "../store/BasicUtilsSlice";
+import { setUserSlice } from "../store/UserSlice";
 
 
 const api = async (endpoint, data,method)=>{
@@ -28,6 +31,12 @@ const api = async (endpoint, data,method)=>{
             }
         }catch(err){
             console.log("error aaya h" + err);
+            store.dispatch(setBasicUtilsSlice({
+                snackbar : {
+                    msg: err.message,
+                    severity: 'error'
+                }
+            }))
             return {
                 status : 500,
                 data: {
@@ -50,4 +59,5 @@ export const postUser = async (data)=> await api('/user/addUser', data, 'post');
 export const postNewUser = async (data)=> await api('/user/addNewUser', data, 'post');
 export const getUserDetails = async ()=> await api('/user/userDetail', '', 'get');
 export const getUserDetailsUsingid = async (id)=> await api('/user/userDetail/' + id, "", 'get');
+export const getUserRecommendation = async (id)=> await api('/user/getrecommendeduser', "", 'get');
 

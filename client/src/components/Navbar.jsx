@@ -25,7 +25,7 @@ export const Navbar = (props) => {
   useEffect(()=>{
     const pathName = path.pathname;
     if(pathName === '/') setSelectedItem(0);
-    else if(pathName === '/projects') setSelectedItem(1);
+    else if(pathName === '/collab') setSelectedItem(1);
     else if(pathName === '/profile') setSelectedItem(2);
   },[path])
 
@@ -53,6 +53,7 @@ export const Navbar = (props) => {
     onAuthStateChanged(getAuth(), async (user) => {
       setIsAuthLoading(false)
       if (user !== null) {
+        console.log(user);
         setIsLoggedIn(true);
         dispatch(setUserSlice({isloggedIn : true}));
       } else {
@@ -89,7 +90,7 @@ export const Navbar = (props) => {
             style={{ width: "1px" }}
             ></span>
 
-          <Link to="projects" className={`${selectedItem === 1 ? 'text-purple-700':''} flex gap-1 min-w-fit items-center hover:text-purple-500 cursor-pointer`}>
+          <Link to="/collab" className={`${selectedItem === 1 ? 'text-purple-700':''} flex gap-1 min-w-fit items-center hover:text-purple-500 cursor-pointer`}>
             <MdGroups3 className="w-7 h-7"/>
             <p>Collab</p>
           </Link>

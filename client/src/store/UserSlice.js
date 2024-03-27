@@ -8,6 +8,7 @@ const initialState = {
     githublink : null,
     tags : [],
     semester : null,
+    collegeName : null
 }
 
 
@@ -42,6 +43,10 @@ export const userSlice = createSlice({
         }
         if(action.payload.tags !== undefined && action.payload.hasOwnProperty('tags')){
           state.tags = action.payload.tags;
+        //   localStorage.setItem('BRANCH', action.payload.BRANCH);
+        }
+        if(action.payload.collegeName !== undefined && action.payload.hasOwnProperty('collegeName')){
+          state.collegeName = action.payload.collegeName;
         //   localStorage.setItem('BRANCH', action.payload.BRANCH);
         }
       }
