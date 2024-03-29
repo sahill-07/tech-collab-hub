@@ -1,17 +1,20 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion';
 
-const UserIconAnimatedTooltip = ({usernamearray, key}) => {
+const UserIconAnimatedTooltip = ({usernamearray, keya}) => {
   const [selected, setSelected] = useState(null);
+  useEffect(()=>{
+    console.log(keya);
+  },[])
 
     if(usernamearray === null || !Array.isArray(usernamearray) || usernamearray.length === 0)
         return <></>
   return (
     <div className='relative'>
-    <div className='flex -space-x-4 rtl:space-x-reverse cursor-pointer'>
+    <div className='flex -space-x-4 rtl:space-x-reverse cursor-pointer max-w-fit'  onMouseLeave={()=>setSelected(null)}>
         {
             usernamearray.map((name, index)=>{
-                return <SingleUser uname={name} key={`${key}-${index}`} selected={selected} setSelected={setSelected}/>
+                return <SingleUser uname={name} key={`${keya}-${index}`} keya={`${keya}-${index}`} selected={selected} setSelected={setSelected}/>
             })
         }  
     </div>
@@ -19,21 +22,19 @@ const UserIconAnimatedTooltip = ({usernamearray, key}) => {
   )
 }
 
-const SingleUser = ({uname, key, selected, setSelected}) => {
+const SingleUser = ({uname, keya, selected, setSelected}) => {
 
     
     const handleHover = ()=>{
       setSelected(uname);
     }
-    const handleLeave = ()=>{
-      if(selected === uname) setSelected(null);
-    }
     return (
         <>
         <div className='relative'>
 
-    {selected !== null && selected === uname && <ToolTip selected={selected} uname={uname} key={key}/>}
+    {selected !== null && selected === uname && <ToolTip selected={selected} uname={uname} key={keya} keya={keya}/>}
         <motion.div
+        layoutId={`usertooltip-${keya}`}
         whileHover={{
             scale : 1.025,
             transition : {
@@ -45,10 +46,9 @@ const SingleUser = ({uname, key, selected, setSelected}) => {
             opacity: 1,
             y: 0,
           }}
-          layoutId={`usertooltip-${key}`}
           onMouseEnter={handleHover}
-          onMouseLeave={handleLeave}
-        className="z-10 w-10 h-10 border-2 border-white bg-slate-300 flex justify-center items-center rounded-full dark:border-gray-800" >{uname[0]}</motion.div>
+        className="z-10 w-10 h-10 border-2 border-white bg-slate-300 flex justify-center items-center rounded-full dark:border-gray-800" >{uname[0]}
+        </motion.div>
         </div>
 
         </>
@@ -56,7 +56,7 @@ const SingleUser = ({uname, key, selected, setSelected}) => {
     )
 }
 
-const ToolTip = ({selected, uname, key}) =>{
+const ToolTip = ({selected, uname, keya}) =>{
     return (
         <motion.div 
         className="bg-white cursor-pointer flex max-w-fit max-h-fit absolute -top-5"
@@ -72,7 +72,7 @@ const ToolTip = ({selected, uname, key}) =>{
             duration: 0.5,
           }}
         // layoutId={`${selected}`}
-        layoutId={`usertooltip-${key}`}
+        layoutId={`usertooltip-${keya}`}
 
         >
             {selected}
