@@ -1,18 +1,12 @@
 import './App.css';
-import { Books } from './pages/Books';
 import { Homepage } from './pages/Homepage';
 import {
   BrowserRouter as Router,
   Route,
   Routes,
-  Navigate,
-  useNavigate,
 } from "react-router-dom";
 import { Profile } from './pages/Profile';
 import { Projects } from './pages/Projects';
-import { AddBook } from './pages/AddBook';
-import { BookDetail } from './pages/BookDetail';
-import { AddProject } from './pages/AddProject';
 import { ProjectDetail } from './pages/ProjectDetail';
 import { useEffect, useState } from 'react';
 import LoginForm from './pages/LoginForm';
@@ -77,10 +71,7 @@ function App() {
         <Route exact path='/profile' element={<Profile/>}/>
       </Route>
       <Route exact path='/auth' element={<LoginForm/>}/>
-      <Route exact path='/addBook' element={<AddBook/>}/>
-      <Route exact path='bookdetail/:id' element={<BookDetail/>}/>
       <Route exact path='/projects/projectdetail/:id' element={<ProjectDetail/>}/>
-      <Route exact path='/addProject' element={<AddProject/>}/>
       </Routes> 
     </Router>
     </>

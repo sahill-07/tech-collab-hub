@@ -1,24 +1,40 @@
 import React, { useEffect, useState } from 'react'
-import { MdLibraryAdd } from "react-icons/md";
-import { Link } from 'react-router-dom';
-import { ProjectList } from '../components/Projects/ProjectList';
-import { Filters } from '../components/Projects/Filters';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux'
+import { ProjectCard } from '../components/Projects/ProjectCard';
+import AOS from "aos";
+import "aos/dist/aos.css";
+import ProjectCardSkeleton from '../components/Projects/ProjectCardSkeleton';
 
 export const Projects = () => {
-  const { email } = useSelector((state)=>state.UserSlice);
-  // const { recommendUserData } = useSelector((state)=>state.ProjectSlice);
-  const dispatch = useDispatch();
+  const projectlist = useSelector((state)=>state.ProjectSlice);
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(()=>{
 
-  },[email])
+  },[projectlist])
+
+  AOS.init({
+    offset: 20
+  })
   return (
     <>
-    <div className='flex gap-3 flex-col mx-3'>
-      
-      {/* <Filters/> */}
-      <ProjectList/>
+    <div className={`flex gap-3 flex-col mx-3 ${isLoading ? 'cursor-progress':''}`}>
+      {
+        !isLoading && <div data-aos="zoom-in" className='p-2 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-2  place-items-center'>
+          {
+            projectlist.length > 0 && projectlist.map((proj, ind)=>{
+              return <ProjectCard data={proj} key={ind}/>
+            })
+          }
+        </div>
+      }
+      {
+        isLoading && <div className='flex gap-2 flex-wrap'>
+          {/* <ProjectCardSkeleton/> */}
+          {/* <ProjectCardSkeleton/> */}
+          <ProjectCardSkeleton/>
+        </div>
+      }
+      <br/>
     </div>
     </>
   )
