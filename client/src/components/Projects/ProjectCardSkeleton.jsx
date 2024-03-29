@@ -5,54 +5,47 @@ import './ProjectCardSkeleton.css';
 
 
 // card drag out animation
+const items = [
+  { id: 1, subtitle: 'Subtitle 1', title: 'Title 1' },
+  { id: 2, subtitle: 'Subtitle 2', title: 'Title 2' },
+  { id: 3, subtitle: 'Subtitle 3', title: 'Title 3' }
+];
 
 const ProjectCardSkeleton = () => {
-    const cards = [1, 2, 3, 4];
-    const [selectedId, setSelectedId] = useState(null);
-    const [canDrag, setCanDrag] = useState(false);
-    const containerRefs = useRef(new Array());
-    const handlePanEnd = (e, info, card) => {
-      if (selectedId) {
-        if (Math.abs(info.offset.x) < 5) {
-          const styles = getComputedStyle(containerRefs.current[card]);
-          const timeout = styles.transform.split(',')[4] * -.6;
-          setCanDrag(false);
-          setTimeout(() => {
-            setSelectedId(null);
-          }, timeout);
-        }
-      } else {
-        setCanDrag(true);
-        setSelectedId(card);
-      }
-    }
+  const [selectedId, setSelectedId] = useState(null);
+  
     return (
-      <div className="layout-cards">
-        {cards.map((card, i) => (
-          <motion.div 
-            className={selectedId === card ? 'opened-card' : 'card' }
-            key={i}
-            layout
-            drag={selectedId === card ? 'x' : false}
-            dragConstraints={{ left: canDrag ? -850 : 0, right: 0 }}
-            dragElastic={.2}
-            onPanEnd={(e, info) => handlePanEnd(e, info, card)}
-            ref={el => containerRefs.current[card] = el}
-          >
-            {selectedId === card && (
-              <>
-                <div />
-                <div />
-                <div />
-              </>
-            )}
-          </motion.div>
-        ))}
+      <div>
+      {items.map(item => (
         <motion.div 
-          className="dim-layer" 
-          animate={{ opacity: selectedId ? .3 : 0 }}
-        />
-      </div>
+          key={item.id}
+          layoutId={item.id} 
+          onClick={() => setSelectedId(item.id)}
+          style={{ cursor: 'pointer', marginBottom: 10, padding: 10, backgroundColor: '#f0f0f0' }}
+        >
+          <motion.h5>{item.subtitle}</motion.h5>
+          <motion.h2>{item.title}</motion.h2>
+        </motion.div>
+      ))}
+
+      <AnimatePresence>
+        {selectedId && (
+          <motion.div 
+            key={selectedId}
+            layoutId={selectedId}
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            style={{ marginBottom: 10, padding: 10, backgroundColor: '#f0f0f0' }}
+          >
+            <motion.h5>{items.find(item => item.id === selectedId).subtitle}</motion.h5>
+            <motion.h2>{items.find(item => item.id === selectedId).title}</motion.h2>
+            <motion.button onClick={() => setSelectedId(null)}>Close</motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
     )
 }
 
