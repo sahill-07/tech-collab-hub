@@ -2,3 +2,5 @@ python-dotenv
 pandas
 openpyxl
 pymongo
+requests
+bs4
