@@ -1,83 +1,105 @@
-import React, { useEffect, useState } from 'react'
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { Typography } from "@mui/material";
 
-const UserIconAnimatedTooltip = ({usernamearray, keya}) => {
+const UserIconAnimatedTooltip = ({ contributorsarray }) => {
   const [selected, setSelected] = useState(null);
-  useEffect(()=>{
-    console.log(keya);
-  },[])
+  useEffect(() => {
+    console.log(contributorsarray);
+  }, []);
 
-    if(usernamearray === null || !Array.isArray(usernamearray) || usernamearray.length === 0)
-        return <></>
-  return (
-    <div className='relative'>
-    <div className='flex -space-x-4 rtl:space-x-reverse cursor-pointer max-w-fit'  onMouseLeave={()=>setSelected(null)}>
-        {
-            usernamearray.map((name, index)=>{
-                return <SingleUser uname={name} key={`${keya}-${index}`} keya={`${keya}-${index}`} selected={selected} setSelected={setSelected}/>
-            })
-        }  
-    </div>
-    </div>
+  if (
+    contributorsarray === null ||
+    !Array.isArray(contributorsarray) ||
+    contributorsarray.length === 0
   )
-}
+    return <></>;
+  return (
+    <div className="relative">
+      <div
+        className="flex -space-x-4 rtl:space-x-reverse cursor-pointer max-w-fit"
+        onMouseLeave={() => setSelected(null)}
+      >
+        {contributorsarray.map((contributor, index) => {
+          return (
+            <SingleUser
+              contributor={contributor}
+              key={`tooltipabcd-${index}`}
+              index={index}
+              selected={selected}
+              setSelected={setSelected}
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
+};
 
-const SingleUser = ({uname, keya, selected, setSelected}) => {
+const SingleUser = ({ contributor, index, selected, setSelected }) => {
+  const handleHover = () => {
+    setSelected({
+      index: index,
+      contributor,
+    });
+  };
 
-    
-    const handleHover = ()=>{
-      setSelected(uname);
-    }
-    return (
-        <>
-        <div className='relative'>
-
-    {selected !== null && selected === uname && <ToolTip selected={selected} uname={uname} key={keya} keya={keya}/>}
+  const handleOnclick = () => {
+    window.open(contributor, "_blank");
+  };
+  return (
+    <>
+      <div onClick={handleOnclick}>
+        {selected !== null && selected.index === index && (
+          <ToolTip selected={selected} key={`tooltipabce-${index}`} />
+        )}
         <motion.div
-        layoutId={`usertooltip-${keya}`}
-        whileHover={{
-            scale : 1.025,
-            transition : {
-              duration : 0.2
+          whileHover={{
+            scale: 1.025,
+            transition: {
+              duration: 0.2,
             },
-            z : 20
+            z: 20,
           }}
           animate={{
             opacity: 1,
             y: 0,
           }}
           onMouseEnter={handleHover}
-        className="z-10 w-10 h-10 border-2 border-white bg-slate-300 flex justify-center items-center rounded-full dark:border-gray-800" >{uname[0]}
-        </motion.div>
-        </div>
-
-        </>
-
-    )
-}
-
-const ToolTip = ({selected, uname, keya}) =>{
-    return (
-        <motion.div 
-        className="bg-white cursor-pointer flex max-w-fit max-h-fit absolute -top-5"
-        initial={{
-            opacity: 0,
-            y: 20,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          transition={{
-            duration: 0.5,
-          }}
-        // layoutId={`${selected}`}
-        layoutId={`usertooltip-${keya}`}
-
+          className="hover:underline z-10 w-10 h-10 border-2 border-white bg-slate-300 flex justify-center items-center rounded-full dark:border-gray-800"
         >
-            {selected}
-        </motion.div>
-    )
-}
+          <Typography variant="subtitle2">{contributor.split("github.com/")[1].toUpperCase()[0]}</Typography>
 
-export default UserIconAnimatedTooltip
+        </motion.div>
+      </div>
+    </>
+  );
+};
+
+const ToolTip = ({ selected }) => {
+  return (
+    <motion.p
+      className="bg-white cursor-pointer absolute -top-5 inline-block px-3 py-1 shadow-lg border rounded-md"
+      initial={{
+        opacity: 0,
+        y: 20,
+        rotateZ: -45,
+      }}
+      animate={{
+        opacity: 1,
+        y: 0,
+        rotateZ: 0,
+        margin: -3,
+      }}
+      transition={{
+        duration: 0.3,
+      }}
+    >
+      <Typography variant="caption">
+        {selected.contributor.split("github.com/")[1]}
+      </Typography>
+    </motion.p>
+  );
+};
+
+export default UserIconAnimatedTooltip;

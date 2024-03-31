@@ -33,7 +33,7 @@ export const ProjectCard = ({data, setSelected}) => {
           return <div className='badge bg-base-300 border-none text-zinc-600 mr-1 mb-1' key={tag}>{tag}</div>
         })}
       </div>
-      <UserIconAnimatedTooltip usernamearray={data.tags} key={`tooltip-key-${data.id}`} keya={`tooltip-key-${data.id}`}/>
+      <UserIconAnimatedTooltip contributorsarray={data.contributors} key={`tooltip-key-${data.id}`}/>
 
     </div>
     </>
