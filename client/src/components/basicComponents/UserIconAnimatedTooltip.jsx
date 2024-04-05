@@ -4,9 +4,6 @@ import { Typography } from "@mui/material";
 
 const UserIconAnimatedTooltip = ({ contributorsarray }) => {
   const [selected, setSelected] = useState(null);
-  useEffect(() => {
-    console.log(contributorsarray);
-  }, []);
 
   if (
     contributorsarray === null ||

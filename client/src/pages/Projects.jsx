@@ -1,17 +1,46 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { ProjectCard } from '../components/Projects/ProjectCard';
 import AOS from "aos";
 import "aos/dist/aos.css";
+import '../components/Projects/ProjectCardSkeleton.css'
 import ProjectCardSkeleton from '../components/Projects/ProjectCardSkeleton';
 import ProjectModal from '../components/Projects/ProjectModal';
+import { getProjectList } from '../http';
+import { setprojecListSlice } from '../store/ProjectSlice';
+import basicUtils from '../utils/basicUtils';
 
 export const Projects = () => {
+  const dispatch = useDispatch();
   const projectlist = useSelector((state)=>state.ProjectSlice);
   const [selected, setSelected] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [columns, setColumns] = useState(4);
   useEffect(()=>{
+    if(projectlist.projects.length === 0){
+      getProjectList('all').then(res=>{
+        if(res.status === 200){
+          console.log(res.data);
+          dispatch(setprojecListSlice(res.data));
+        }
+        
+      })
+    }
+  },[]) 
 
+  useEffect(() => {
+    const handleResize = () => {
+      setColumns(basicUtils.getNumberOfColumns(window.innerWidth));
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []); // Empty dependency array to run only once on component mount
+
+  useEffect(()=>{
+    console.log(projectlist);
   },[projectlist])
 
   AOS.init({
@@ -19,14 +48,27 @@ export const Projects = () => {
   })
   return (
     <>
-    <div className={`${isLoading ? 'cursor-progress':''}`}>
+    <div className={`${projectlist.projects.length === 0 ? 'cursor-progress':''}`}>
       {
-        !isLoading && <div data-aos="zoom-in" className='p-2 columns-2 md:columns-3 xl:columns-4 gap-8'>
-          {
-            items.length > 0 && items.map((proj, ind)=>{
+        projectlist.projects.length > 0 && <div data-aos="zoom-in" className=' gap-8'>
+          {/* {
+            basicUtils.makeHorizontalAlignment(projectlist.projects, screenSize).map((proj, ind)=>{
               return <ProjectCard data={proj} key={proj.id} setSelected={setSelected}/>
             })
-          }
+          } */}
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:mx-2 lg:mx-3 xl:mx-4 mx-1'>
+            {
+              Array.from({length : columns}, (_, currcol)=>{
+                return (<div className={` flex flex-col gap-4  ${currcol%2 === 0 ? 'evenColumnsofproject':'oddColumnsofproject'}`}>
+                  {
+                    basicUtils.getCurrentColElement(projectlist.projects, currcol, columns).map((proj, ind)=>{
+                      return <ProjectCard data={proj} key={proj._id} setSelected={setSelected}/>
+                    })
+                  }
+                </div>)
+              })
+            }
+          </div>
         </div>
       }
       <br/>

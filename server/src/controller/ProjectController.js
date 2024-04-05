@@ -4,50 +4,17 @@ const UserDb = require('../models/User');
 exports.project_controller = {
   getProjectList: (req, res) => {
     const filters = req.params.filters.split(",");
-    let pipeline = [];
-    if (filters[0] === "all")
-      pipeline = [
-        {
-          $project: {
-            _id: 1,
-            PROJECT_NAME: 1,
-            POSTED_BY: 1,
-            PROJECT_IMAGE_URL: 1,
-            TAGS: 1,
-          },
-        },
-      ];
-    else {
-      pipeline = [
-        {
-          $match: {
-            TAGS: { $in: filters },
-          },
-        },
-        {
-          $addFields: {
-            matchedValues: { $size: { $setIntersection: ["$TAGS", filters] } },
-          },
-        },
-        { $sort: { matchedValues: -1 } },
-        {
-          $project: {
-            _id: 1,
-            PROJECT_NAME: 1,
-            POSTED_BY: 1,
-            PROJECT_IMAGE_URL: 1,
-            TAGS: 1,
-          },
-        },
-      ];
-    }
+    let pipeline = [
+      {$limit : 15}
+    ];
+    
     ProjectDb.aggregate(pipeline)
       .then((list) => {
         res.status(200).json(list);
       })
       .catch((err) => {
         console.log(err);
-        res.status(400).json({
+        res.status(500).json({
           success: false,
         });
       });

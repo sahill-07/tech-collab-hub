@@ -5,12 +5,12 @@ const initialState = {
 }
 
 
-export const projectSlice = createSlice({
+export const projectListSlice = createSlice({
     name: "projectSlice",
     initialState,
     reducers: {
-      setprojectSlice: (state, action) => {
-        if(action.payload !== undefined && Array.isArray(action.payload) && action.payload[0].hasOwnProperty('email')){
+      setprojecListSlice: (state, action) => {
+        if(action.payload !== undefined && Array.isArray(action.payload)){
             state.projects = action.payload;
         }
       }
@@ -18,6 +18,6 @@ export const projectSlice = createSlice({
   });
   
   // Action creators are generated for each case reducer function
-  export const { setprojectSlice } = projectSlice.actions;
+  export const { setprojecListSlice } = projectListSlice.actions;
   
-  export default projectSlice.reducer;
+  export default projectListSlice.reducer;
