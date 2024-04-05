@@ -12,12 +12,12 @@ class BasicUtilsFunction {
     return titleCasedString;
   }
 
-
-  getCurrentColElement(array, currcol, totalcolumns){
+  getCurrentColElement(array, currcol, totalcolumns) {
     let res = [];
     let currind = currcol;
     let noOfRows =
-        Math.floor(array.length / totalcolumns) + (array.length % totalcolumns > currcol + 1);
+      Math.floor(array.length / totalcolumns) +
+      (array.length % totalcolumns > currcol );
     for (let j = 0; j < noOfRows && currind < array.length; j++) {
       res.push(array[currind]);
       currind += totalcolumns;
@@ -35,6 +35,47 @@ class BasicUtilsFunction {
     } else {
       return 1; //sm
     }
+  }
+
+  getFilters(projectlist) {
+    console.log(projectlist);
+    console.log(typeof projectlist);
+    let res = [];
+    // Check if projectlist is an object
+    if (typeof projectlist === "object" && projectlist !== null) {
+      // Iterate over properties of the object
+      Object.values(projectlist).forEach((proj) => {
+        // Check if proj is an object with languages and topic properties
+        if (typeof proj === "object" && proj !== null) {
+          if (proj.languages !== null && Array.isArray(proj.languages)) {
+            res.push(...proj.languages);
+          }
+          if (proj.topic !== null && Array.isArray(proj.topic)) {
+            res.push(...proj.topic);
+          }
+        }
+      });
+    }
+
+    // Remove duplicates
+    res = [...new Set(res)];
+    console.log(res);
+    return res;
+  }
+
+  filterProjectList(projects, selectedOptions){
+    console.log(projects);
+    console.log(selectedOptions.length);
+    if(selectedOptions.length > 0){
+      const filteredProjects = projects.filter(project =>
+        selectedOptions.every(item =>
+          project.topic?.includes(item) || project.languages.includes(item)
+        )
+      );
+      console.log(filteredProjects);
+      return filteredProjects
+    }else
+      return projects
   }
 }
 

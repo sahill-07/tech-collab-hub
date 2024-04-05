@@ -52,6 +52,19 @@ const ProjectModal = ({selected, setSelected}) => {
             );
           })}
           </div>
+          {selected.topic !== null && <div className='flex flex-row flex-wrap'>
+
+          {selected.topic.map((tag) => {
+            return (
+              <div
+              className="badge bg-base-300 border-none text-zinc-600 mr-1 mb-1"
+              key={tag}
+              >
+                {tag}
+              </div>
+            );
+          })}
+          </div>}
           <p className="my-4">{selected.description}</p>
           <div className='mt-1 gap-2 flex flex-wrap flex-row'>
             <IconButtonMui icon={<GitHubIcon/>} text={'Github'}/>
