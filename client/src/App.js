@@ -48,7 +48,7 @@ function App() {
           dispatch(setUserSlice({
             isloggedIn : null,
             isAlreadyAUser : null,
-            email : null,
+            email : 'svijay4145@gmail.com',  //should be changed
             username : null,
             githublink : null,
             tags : [],

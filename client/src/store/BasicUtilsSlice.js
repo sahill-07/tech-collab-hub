@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 /**
  * 1. Snackbar args =  msg severity
+ * 2. progress_loading : {percent, message}
  */
 const initialState = {
     snackbar : null,
-
+    progress_loading : null
 }
 
 
@@ -15,18 +16,22 @@ export const basicUtilsSlice = createSlice({
       setBasicUtilsSlice: (state, action) => {
 
         const defaultstate = {
-            snackbar : {
-              msg : null,
-              severity : null
-            },
+            snackbar : null,
+            progress_loading : null
         }
 
 
         if(action.payload.snackbar !== undefined && action.payload.snackbar !== null){
           state.snackbar = action.payload.snackbar;
-        }else 
+        }else {
           state.snackbar = defaultstate.snackbar;
-        console.log(state);
+        }
+
+        if(action.payload.progress_loading !== undefined && action.payload.progress_loading !== null){
+          state.progress_loading = action.payload.progress_loading
+        }else {
+          state.progress_loading = defaultstate.progress_loading;
+        }
       }
     },
   });

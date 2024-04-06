@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { MySnackbar } from "../MySnackbar";
 import { useDispatch, useSelector } from "react-redux";
 import { setBasicUtilsSlice } from "../../store/BasicUtilsSlice";
+import ProgressLoading from "../basicComponents/TextBox/ProgressLoading";
 
 const BasicUtils = () => {
   const basicUtils = useSelector((state) => state.BasicUtilsSlice);
@@ -21,6 +22,10 @@ const BasicUtils = () => {
         msg={basicUtils.snackbar.msg}
         severity={basicUtils.snackbar.severity}
       />}
+
+      {
+        basicUtils.progress_loading !== null && <ProgressLoading data={basicUtils.progress_loading}/>
+      }
     </>
   );
 };

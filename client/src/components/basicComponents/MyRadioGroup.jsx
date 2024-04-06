@@ -1,6 +1,7 @@
 import { FormControlLabel, Radio, RadioGroup } from '@mui/material';
 import React from 'react';
 import PropTypes from 'prop-types';
+import Typography from '@mui/material/Typography';
 
 
 
@@ -14,15 +15,16 @@ const MyRadioGroup = ({radioOptions, radioGroupTitle, value, setValue, isDisable
   return (
     <>
     <div className='flex flex-col'>
-  {radioGroupTitle}
-  <RadioGroup value={value} onChange={handleChange} row>
+    <Typography variant="subtitle1" gutterBottom>{radioGroupTitle}</Typography>
+  
+  <RadioGroup value={value} onChange={handleChange} className='ml-3'>
     {radioOptions.map((ele, ind) => (
       <FormControlLabel
         key={ind}
         disabled={isDisabled}
         value={ele.value}
-        control={<Radio className='w-auto h-auto' />}
-        label={ele.label}
+        control={<Radio sx={{ marginLeft: 3, padding: 0, }} />}
+        label={<Typography variant="subtitle2">{ele.label}</Typography>}
       />
     ))}
   </RadioGroup>
