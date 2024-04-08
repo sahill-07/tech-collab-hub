@@ -21,7 +21,7 @@ const MyCirclularProgress = ({value}) => {
           color : '#00000'
         }}
       >
-        <Typography variant="caption" component="div" color="text.white">
+        <Typography variant="caption" component="div" color="white">
           {`${Math.round(value)}%`}
         </Typography>
       </Box>

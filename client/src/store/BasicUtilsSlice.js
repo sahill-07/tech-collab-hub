@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 /**
  * 1. Snackbar args =  msg severity
- * 2. progress_loading : {percent, message}
+ * 2. progress_loading : {percent, maxpercent, message}  //maxpercent is used to show that every second is progress is increasing so at max it should come to maxpercent
  */
 const initialState = {
     snackbar : null,

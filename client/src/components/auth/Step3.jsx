@@ -20,8 +20,9 @@ const Step3 = ({ setStepperActiveIndex, userData, setUserData }) => {
         console.log(userData);
         dispatch(setBasicUtilsSlice({
             progress_loading : {
-                percent : 40,
-                message : "pushing data to database"
+                percent : 10,
+                message : "pushing data to database",
+                maxpercent : 40 
             }
         }))
         setisOpenConfirmationDialogOpen(false);

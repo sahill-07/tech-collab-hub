@@ -7,10 +7,11 @@ import { MdGroups3 } from "react-icons/md";
 import { ImProfile } from "react-icons/im";
 import { useLocation } from "react-router-dom";
 import { IoLogInSharp } from 'react-icons/io5'
-import { GoogleAuthProvider, getAuth, onAuthStateChanged, signInWithRedirect } from 'firebase/auth';
+import { GoogleAuthProvider, getAuth, onAuthStateChanged } from 'firebase/auth';
 import loading_animation from '../assets/Hourglass.gif';
 import { useDispatch} from "react-redux";
 import { setUserSlice } from "../store/UserSlice";
+import { setBasicUtilsSlice } from "../store/BasicUtilsSlice";
 
 export const Navbar = (props) => {
   const dispatch = useDispatch();
@@ -45,7 +46,7 @@ export const Navbar = (props) => {
 
   const provider = new GoogleAuthProvider();
   const navigate = useNavigate();
-  const login = ()=>{  
+  const login = ()=>{
     navigate('/auth')
   }
 

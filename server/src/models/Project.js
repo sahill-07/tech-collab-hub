@@ -12,7 +12,8 @@ const projectSchema = new mongoose.Schema({
     repo_author: String,
     repo_link: String,
     similarity_matrix: [Number],
-    topic: mongoose.Schema.Types.Mixed // Since "topic" can be a number or NaN, we use Mixed type to accommodate both
+    topic: mongoose.Schema.Types.Mixed, // Since "topic" can be a number or NaN, we use Mixed type to accommodate both
+    added_by : String,
   });
 
 module.exports = mongoose.model(DATABASE_TABLE_NAME, projectSchema);

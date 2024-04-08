@@ -7,8 +7,13 @@ import MyStepper from "../basicComponents/MyStepper";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
+import { GoogleAuthProvider, getAuth, onAuthStateChanged, signInWithRedirect } from 'firebase/auth';
+import { setBasicUtilsSlice } from "../../store/BasicUtilsSlice";
+
 
 export const SignUp = () => {
+  const provider = new GoogleAuthProvider();
+  const dispatch = useDispatch();
   const userslicedata = useSelector((state)=>state.UserSlice);
 
   const [stepperActiveIndex, setStepperActiveIndex] = useState(0);
@@ -21,41 +26,40 @@ export const SignUp = () => {
     curr_semester : '',
     college_name : '',
     area_of_interest : [],
-    experience : '',
+    experience : [],
     preferred_learning_resource : [],
-    tech_stack_interest : []
-
+    tech_stack_interest : [],
   })
 
+  useEffect(()=>{
+    dispatch(setBasicUtilsSlice({
+      progress_loading : {
+        percent : 20,
+        maxpercent : 100,
+        message : "Checking Google Sign-In Status..."
+      }
+    }))
+    var auth =  getAuth();
+    onAuthStateChanged(auth, async(user)=>{
+      dispatch(setBasicUtilsSlice({}))
+      if(user === null){
+        signInWithRedirect(auth, provider)
+        .catch((error) => {
+          const errorMessage = error.message;
+          console.log(errorMessage);
+          dispatch(setBasicUtilsSlice({
+            snackbar : {
+              msg : errorMessage,
+              severity : 'error'
+            }
+          }))
+        });
+      }else{
+        console.log(user);
+      }
+    })
+  },[])
 
-  
-  const submitForm = (e)=>{
-    // e.preventDefault();
-    // if(userName === '' || userName === null){
-    //   setErrorMsg('Please Fill the valid Github Link');
-    //   setIsError(true);
-    //   return ;
-    // }
-    // if(hashTags.length === 0){
-    //   setErrorMsg('Please Add Atleast one Techstack');
-    //   setIsError(true);
-    //   return ;
-    // }
-    // let json = {
-    //   username : userName,
-    //   githublink : githubLink,
-    //   tags: hashTags,  
-    //   // email : isGoogleSignInDone  
-    // };
-    // if(isUserAClgStudent === 'true') json = {...json, semester};
-    // if(isUserAClgStudent === 'true') json = {...json, collegeName};
-    // postNewUser(json).then(res=>{
-    //   console.log(res.status);
-    //   if(res.status === 200){
-    //     dispatch(setUserSlice({isAlreadyAUser : true}));
-    //   }
-    // })
-  }
 
   
   return (

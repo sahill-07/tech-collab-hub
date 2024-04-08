@@ -1,5 +1,5 @@
 const UserDb = require('../models/User');
-const { UserDbService } = require('../services/UserDbService');
+const UserDbService = require('../services/UserDbService');
 
 exports.user_controller = {
     post : async (req, res) =>{
@@ -15,17 +15,15 @@ exports.user_controller = {
         }
     },
 
-    postNew : async (req, res)=>{
+    postNewUser : async (ws, client_email, message)=>{
         try{
-            await UserDbService.addNewUser(req.body);
+            await UserDbService.addNewUser(ws, client_email, message);
             
-            res.status(200);
-            res.json({success: true});
         }catch(err){
             console.log(err);
-            res.status(400).json({
-                success: false
-            });
+            // res.status(400).json({
+            //     success: false
+            // });
         }
     },
 

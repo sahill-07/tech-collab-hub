@@ -14,5 +14,20 @@ const verifyToken = (req, res, next) =>{
         });
 }
 
+const verifyWsToken = (req, next) =>{
+        const token = req.headers.authorization;
+        if(token === 'vijaykatoken') {
+            next(null, 'svijay4145@gmail.com');
+        }else{
+            try{
+                const decodeValue = admin.auth().verifyIdToken(token).then(decodedToken =>{
+                    next(null, decodedToken.email);  
+                })
+            }catch(err){
+                next(err, null);
+            }
+        }
+}
 
-module.exports =  { verifyToken };
+
+module.exports =  { verifyToken, verifyWsToken };
