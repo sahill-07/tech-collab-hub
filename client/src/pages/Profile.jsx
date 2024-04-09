@@ -23,15 +23,7 @@ export const Profile = () => {
 
   const signOutF = ()=>{
     setIsSignOutButtonClicke(true);
-    dispatch(setUserSlice({
-      isloggedIn : null,
-      isAlreadyAUser : null,
-      email : null,
-      username : null,
-      githublink : null,
-      tags : [],
-      semester : null,
-    }))
+    dispatch(setUserSlice())
   }
 
   useEffect(()=>{

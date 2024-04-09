@@ -4,7 +4,7 @@ import "aos/dist/aos.css";
 import Button from "@mui/material/Button";
 import MyCheckbox from '../basicComponents/MyCheckbox';
 import MyAlertDialog from '../basicComponents/MyAlertDialog';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setBasicUtilsSlice } from '../../store/BasicUtilsSlice';
 import WebsockteRegisterUser from '../../http/WebsocketRegisterUser';
 
@@ -15,7 +15,6 @@ const Step3 = ({ setStepperActiveIndex, userData, setUserData, token }) => {
     const [preferred_learning_resource, setpreferred_learning_resource] = useState(userData['preferred_learning_resource']);
     const [tech_stack_interest, settech_stack_interest] = useState(userData['tech_stack_interest']);
     const [isConfirmationDialogOpen, setisOpenConfirmationDialogOpen] = useState(false);
-    
 
     const handleConfirmedButtonClicked = ()=>{
         console.log(userData);

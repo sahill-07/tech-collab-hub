@@ -21,7 +21,7 @@ const ProgressLoading = ({ data }) => {
     return () => {
       clearInterval(timer);
     };
-  },[progress, data.maxpercent])
+  },[])
 
   return (
     <Backdrop

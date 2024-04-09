@@ -2,6 +2,7 @@ const { createServer } = require('http');
 const { WebSocketServer } = require('ws');
 const { verifyWsToken } = require('./src/middleware/VerifyToken');
 const WsRoute = require('./src/routes/WsRoute');
+const WsResponseType = require('./src/data/WsResponseType');
 
 function onSocketError(err) {
   console.error(err);
@@ -27,7 +28,7 @@ server.on('upgrade', function upgrade(request, socket, head) {
   verifyWsToken(request, function next(err, client) {
     if (err || !client) {
         console.log(err);
-      socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
+      socket.write(WsResponseType.buildErrorResponse('HTTP/1.1 401 Unauthorized\r\n\r\n'));
       socket.destroy();
       return;
     }

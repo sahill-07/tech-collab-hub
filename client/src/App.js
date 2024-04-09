@@ -18,13 +18,10 @@ import { getUserDetails } from './http';
 import BasicUtils from './components/BasicUtils/BasicUtils';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const dispatch = useDispatch();
   const usersliceData = useSelector((state)=> state.UserSlice);
   const utilsliceData = useSelector((state)=> state.BasicUtilsSlice);
-  useEffect(()=>{
-    console.log(utilsliceData);
-  },[utilsliceData])
+  
 
 
   
@@ -48,7 +45,7 @@ function App() {
           dispatch(setUserSlice({
             isloggedIn : null,
             isAlreadyAUser : null,
-            email : 'svijay4145@gmail.com',  //should be changed
+            email : null,  
             username : null,
             githublink : null,
             tags : [],
@@ -61,8 +58,8 @@ function App() {
   
   return (
     <>
-    <BasicUtils/>
     <Router>
+    <BasicUtils/>
       <Routes>
       <Route exact path="/" element={<Homepage/>}>
         <Route exact path='/collab' element={<RecommendedUser/>}/>
@@ -70,6 +67,7 @@ function App() {
         <Route exact path='/profile' element={<Profile/>}/>
       </Route>
       <Route exact path='/auth' element={<LoginForm/>}/>
+      <Route exact path='/auth/help' element={<Projects/>}/>
       <Route exact path='/projects/projectdetail/:id' element={<ProjectDetail/>}/>
       </Routes> 
     </Router>

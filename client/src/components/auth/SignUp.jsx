@@ -14,7 +14,6 @@ import { setBasicUtilsSlice } from "../../store/BasicUtilsSlice";
 export const SignUp = () => {
   const provider = new GoogleAuthProvider();
   const dispatch = useDispatch();
-  const userslicedata = useSelector((state)=>state.UserSlice);
   const [token, setToken] = useState(null);
 
   const [stepperActiveIndex, setStepperActiveIndex] = useState(0);

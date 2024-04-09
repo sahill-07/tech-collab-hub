@@ -1,15 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/Homepage.css";
 import Lottie from "lottie-react";
 import coder_animation from "../assets/coder_animation.json";
 import { SignUp } from "../components/auth/SignUp";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  useNavigate
+} from "react-router-dom";
+
 
 const LoginForm = () => {
+  const navigate = useNavigate();
+  const usersliceData = useSelector((state)=> state.UserSlice);
   AOS.init({
     duration: 800,
   });
+  useEffect(()=>{
+    if(usersliceData.username !== null){
+      navigate('/')
+    }
+  },[usersliceData])
   return (
     <>
       <div className="bg1 w-screen h-screen" />

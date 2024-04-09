@@ -19,13 +19,12 @@ const verifyWsToken = (req, next) =>{
         if(token === 'vijaykatoken') {
             next(null, 'svijay4145@gmail.com');
         }else{
-            try{
-                const decodeValue = admin.auth().verifyIdToken(token).then(decodedToken =>{
+                admin.auth().verifyIdToken(token).then(decodedToken =>{
                     next(null, decodedToken.email);  
+                }).catch(err=>{
+                    next(err, null)
                 })
-            }catch(err){
-                next(err, null);
-            }
+        
         }
 }
 

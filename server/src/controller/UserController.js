@@ -1,3 +1,4 @@
+const WsResponseType = require('../data/WsResponseType');
 const UserDb = require('../models/User');
 const UserDbService = require('../services/UserDbService');
 
@@ -20,10 +21,9 @@ exports.user_controller = {
             await UserDbService.addNewUser(ws, client_email, message);
             ws.close()
         }catch(err){
-            console.log(err);
-            // res.status(400).json({
-            //     success: false
-            // });
+            ws.send(WsResponseType.buildErrorResponse(err.message))
+            ws.close();
+            console.log(`Encoutered Error for ${client_email} with message ${err.message}`);
         }
     },
 
