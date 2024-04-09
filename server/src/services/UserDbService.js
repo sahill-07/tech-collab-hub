@@ -26,18 +26,18 @@ class UserDbService {
                 return ;
             }
             ws.send(WsResponseType.buildProgressResponse(20, 40, 'Fetching User github repos...'));
-            const { generated_tags, generated_language } = await this.hitRequestAndExtractTag(data.username);
+            const { generated_tags, generated_language } = await this.hitRequestAndExtractTag(data.githublink.split('github.com/')[1]);
             data.generated_tags = generated_tags;
 
 
             ws.send(WsResponseType.buildProgressResponse(41, 60, 'Building User List Preference...'))
-            data.knn = await this.calculateKnn(generated_tags, data.email);
+            data.knn = await this.calculateKnn(generated_tags, client_email);
 
             ws.send(WsResponseType.buildProgressResponse(61, 75, 'Building Project prefernce list...'))
             const projectList = await ProjectRecommendationAlgo.main(generated_tags, client_email, generated_language);
             data.projectList = projectList;
 
-            const user = await new User({...data});
+            const user = await new User({...data, email : client_email});
             const savedNote = await user.save();
 
             ws.send(WsResponseType.buildProgressResponse(90, 100, 'Completed'))

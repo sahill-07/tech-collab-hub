@@ -15,7 +15,7 @@ const verifyToken = (req, res, next) =>{
 }
 
 const verifyWsToken = (req, next) =>{
-        const token = req.headers.authorization;
+        const token = req.url.split('?token=')[1];
         if(token === 'vijaykatoken') {
             next(null, 'svijay4145@gmail.com');
         }else{

@@ -18,7 +18,7 @@ exports.user_controller = {
     postNewUser : async (ws, client_email, message)=>{
         try{
             await UserDbService.addNewUser(ws, client_email, message);
-            
+            ws.close()
         }catch(err){
             console.log(err);
             // res.status(400).json({

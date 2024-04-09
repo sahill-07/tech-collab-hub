@@ -15,6 +15,7 @@ export const SignUp = () => {
   const provider = new GoogleAuthProvider();
   const dispatch = useDispatch();
   const userslicedata = useSelector((state)=>state.UserSlice);
+  const [token, setToken] = useState(null);
 
   const [stepperActiveIndex, setStepperActiveIndex] = useState(0);
 
@@ -56,6 +57,7 @@ export const SignUp = () => {
         });
       }else{
         console.log(user);
+        setToken(user.accessToken);
       }
     })
   },[])
@@ -73,7 +75,7 @@ export const SignUp = () => {
           <MyStepper allSteps={allSteps} activeIndex={stepperActiveIndex}/>
           {stepperActiveIndex === 0 && <Step1 setStepperActiveIndex={setStepperActiveIndex} userData={userdata} setUserData={setUserData}/>}
           {stepperActiveIndex === 1 && <Step2 setStepperActiveIndex={setStepperActiveIndex} userData={userdata} setUserData={setUserData}/>}
-          {stepperActiveIndex === 2 && <Step3 setStepperActiveIndex={setStepperActiveIndex} userData={userdata} setUserData={setUserData}/>}
+          {stepperActiveIndex === 2 && <Step3 setStepperActiveIndex={setStepperActiveIndex} userData={userdata} setUserData={setUserData} token={token}/>}
         </div>
       </div>
     </>

@@ -24,7 +24,7 @@ const BasicUtils = () => {
       />}
 
       {
-        basicUtils.progress_loading !== null && <ProgressLoading data={basicUtils.progress_loading}/>
+        basicUtils.progress_loading !== null && basicUtils.progress_loading.maxpercent < 100 && <ProgressLoading data={basicUtils.progress_loading}/>
       }
     </>
   );

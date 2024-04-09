@@ -22,8 +22,8 @@ const Step1 = ({setStepperActiveIndex, userData, setUserData}) => {
     const urlRegex = /^https?:\/\/(?:www\.)?github\.com\/.*[^\/]$/;;
     if(urlRegex.test(githubLink) || githubLink === ''){
       setIsErrorInGithubLink(false);
-      const username_ = githubLink.split('.com/')[1];
-      setUserName(username_);
+      // const username_ = githubLink.split('.com/')[1];
+      // setUserName(username_);
     }else {
       setIsErrorInGithubLink(true);
       setUserName('');
@@ -41,7 +41,7 @@ const Step1 = ({setStepperActiveIndex, userData, setUserData}) => {
     <div data-aos="fade-left">
       <form onSubmit={formsubmit} id="step-1" className="flex flex-col gap-3">
         <MyTextField endIcon={<FaGithubSquare/>} label='GithubLink' setVariable={setGithubLink} variable={githubLink} iserror={isErrorInGithubLink} errormsg={messageForWrongGithubLink} />
-        <MyTextField endIcon={<CgUser/>} label='User Name' setVariable={setUserName} variable={userName} isDisabled={true}/>
+        <MyTextField endIcon={<CgUser/>} label='User Name' setVariable={setUserName} variable={userName}/>
         <Button type='submit' color='success' variant='contained'>Next</Button>
     </form>
     </div>

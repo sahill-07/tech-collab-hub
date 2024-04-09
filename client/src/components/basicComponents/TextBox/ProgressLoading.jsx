@@ -9,9 +9,10 @@ import MyCircularProgress from '../MyCirclularProgress'
 const ProgressLoading = ({ data }) => {
   const [progress, setProgress] = useState(data.percent);
   useEffect(()=>{
+    console.log('now progress = ' + progress);
     const timer = setInterval(() => {
       if (progress <= data.maxpercent) {
-        setProgress(progress => (progress + 1));
+        setProgress(progress => (Math.max(progress + 1, data.percent)));
       } else {
         clearInterval(timer);
       }
