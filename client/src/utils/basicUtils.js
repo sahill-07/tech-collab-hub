@@ -38,8 +38,6 @@ class BasicUtilsFunction {
   }
 
   getFilters(projectlist) {
-    console.log(projectlist);
-    console.log(typeof projectlist);
     let res = [];
     // Check if projectlist is an object
     if (typeof projectlist === "object" && projectlist !== null) {
@@ -59,20 +57,16 @@ class BasicUtilsFunction {
 
     // Remove duplicates
     res = [...new Set(res)];
-    console.log(res);
     return res;
   }
 
   filterProjectList(projects, selectedOptions){
-    console.log(projects);
-    console.log(selectedOptions.length);
     if(selectedOptions.length > 0){
       const filteredProjects = projects.filter(project =>
         selectedOptions.every(item =>
           project.topic?.includes(item) || project.languages.includes(item)
         )
       );
-      console.log(filteredProjects);
       return filteredProjects
     }else
       return projects

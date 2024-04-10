@@ -18,7 +18,7 @@ class WebSocketUtils {
                     this.processError(data);
             }
         }catch(err){
-            console.log(err);
+            console.error(err);
         }
     }
     processProgress(data){

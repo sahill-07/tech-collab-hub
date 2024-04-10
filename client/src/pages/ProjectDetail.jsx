@@ -13,7 +13,6 @@ export const ProjectDetail = () => {
     useEffect(() => {
       const id = location.pathname.split('/')[3];   
       getProjectDetailsById(id).then(res=>{
-        console.log(res.data);
         setData(res.data);
       })
     }, [])

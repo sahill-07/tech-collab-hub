@@ -26,11 +26,10 @@ const LoginForm = () => {
     if(usersliceData.username !== null){
       navigate('/')
     }else if((store.getState().BasicUtilsSlice.progress_loading === undefined || store.getState().BasicUtilsSlice.progress_loading === null) && usersliceData.email === null){
-      console.log(usersliceData.email);
       signInWithRedirect(getAuth(), provider)
         .catch((error) => {
           const errorMessage = error.message;
-          console.log(errorMessage);
+          console.error(errorMessage);
           dispatch(setBasicUtilsSlice({
             snackbar : {
               msg : errorMessage,

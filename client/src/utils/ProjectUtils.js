@@ -14,7 +14,6 @@ class ProjectUtils{
             }
             else{ //user is registered
                 getProjectListForLoggedInUsers().then(res=>{
-                  console.log(res);
                   if(res.status === 200){
                     store.dispatch(setprojecListSlice(res.data));
                   }

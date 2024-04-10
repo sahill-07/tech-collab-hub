@@ -10,11 +10,9 @@ const RecommendedUser = () => {
     const { recommendUserData } = useSelector((state)=>state.RecommendedUserSlice);
     const dispatch = useDispatch();
     useEffect(()=>{
-        console.log(email);
         if(email !== null && recommendUserData.length === 0){
             getUserRecommendation().then(res=>{
                 if(res.status === 200){
-                    console.log(res.data);
                     dispatch(setRecommendedUserSlice(res.data));
                 }
             })

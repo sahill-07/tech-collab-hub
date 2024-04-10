@@ -35,7 +35,6 @@ export const Activities = ({data}) => {
 
   const book_url = (id)=>{
     const url = window.location.origin + '/bookdetail/' + id;
-    console.log(url);
     window.open(url, '_blank');
   }
   const project_url = (id)=>{

@@ -27,9 +27,7 @@ export const Profile = () => {
   }
 
   useEffect(()=>{
-    console.log(usersliceData.username);
     if(usersliceData.username === null && isSignOutButtonClicked){
-      console.log('signout');
       signOut(auth);
     }
   }, [usersliceData]);

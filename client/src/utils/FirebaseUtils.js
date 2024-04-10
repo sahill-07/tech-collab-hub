@@ -15,7 +15,6 @@ class FirebaseUtils {
                     message : "Fetching User Details..."
                 }
             }));
-            console.log('google sign in details');
             store.dispatch(setUserSlice({
                 token : user.accessToken,
                 email : user.email
@@ -32,7 +31,6 @@ class FirebaseUtils {
                     }
                 }));
             })
-            console.log(user);
             // get api
         }
         else {

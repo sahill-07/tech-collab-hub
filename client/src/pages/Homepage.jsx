@@ -14,7 +14,6 @@ export const Homepage = () => {
   useEffect(()=>{
     const searchParams = new URLSearchParams(location.search);
     const code = searchParams.get('hashTags');
-    console.log(code);
   },[]);
   return (
     <>

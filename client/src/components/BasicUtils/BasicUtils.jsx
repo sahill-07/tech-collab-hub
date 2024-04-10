@@ -12,7 +12,6 @@ const BasicUtils = () => {
   const basicUtils = useSelector((state) => state.BasicUtilsSlice);
   const [isOpen, setOpen] = useState(false);
   useEffect(() => {
-    console.log(basicUtils);
     if (basicUtils.snackbar !== null && basicUtils.snackbar !== undefined) {
         setOpen(true);
     }
