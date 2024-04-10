@@ -21,6 +21,7 @@ class UserDbService {
 
             const validateJson = this.validateJson(data);
             if(validateJson !== true){
+                console.log(validateJson);
                 ws.send(validateJson)
                 ws.close();
                 return ;
@@ -36,6 +37,7 @@ class UserDbService {
             ws.send(WsResponseType.buildProgressResponse(61, 75, 'Building Project prefernce list...'))
             const projectList = await ProjectRecommendationAlgo.main(generated_tags, client_email, generated_language);
             data.projectList = projectList;
+            console.log(projectList);
 
             const user = await new User({...data, email : client_email});
             const savedNote = await user.save();
@@ -65,11 +67,11 @@ class UserDbService {
           const actualType = Array.isArray(jsonData[field]) ? 'array' : typeof jsonData[field];
       
           if (actualType !== expectedType) {
-            return {
+            return JSON.stringify({
                 type : WsResponseType.error,
                 severity : 'error',
                 msg :(`Field '${field}' has invalid type. Expected type: '${expectedType}', Actual type: '${actualType}'.`)
-            };
+            });
           }
         }
 

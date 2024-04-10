@@ -8,6 +8,17 @@ import ChatIcon from '@mui/icons-material/Chat';
 import IconButtonMui from '../basicComponents/Button/IconButtonMui';
 
 const ProjectModal = ({selected, setSelected}) => {
+
+  const handleGithubClick = ()=>{
+    window.open(selected.repo_link)
+  }
+  const addToSavedList = ()=>{
+
+  }
+
+  const openChat = ()=>{
+    
+  }
     
     if(selected === null){
         return <></>
@@ -67,9 +78,9 @@ const ProjectModal = ({selected, setSelected}) => {
           </div>}
           <p className="my-4">{selected.description}</p>
           <div className='mt-1 gap-2 flex flex-wrap flex-row'>
-            <IconButtonMui icon={<GitHubIcon/>} text={'Github'}/>
-            <IconButtonMui icon={<StarOutlineIcon/>} text={'Star'}/>
-            <IconButtonMui icon={<ChatIcon/>} text={'Chat'}/>
+            <IconButtonMui icon={<GitHubIcon/>} text={'Github'} onClick={handleGithubClick}/>
+            <IconButtonMui icon={<StarOutlineIcon/>} text={'Star'} onClick={addToSavedList}/>
+            <IconButtonMui icon={<ChatIcon/>} text={'Chat'} onClick={openChat}/>
           </div>
           {/* <button className="btn btn-primary btn-block">Download</button> */}
         </motion.div>

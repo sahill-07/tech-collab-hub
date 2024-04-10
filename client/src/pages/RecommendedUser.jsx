@@ -23,7 +23,7 @@ const RecommendedUser = () => {
     <div className='flex gap-2 flex-row mx-1 md:mx-3'>
 
     {
-        recommendUserData.length > 0 && recommendUserData.map((ele, index)=>{
+        recommendUserData !== null && recommendUserData !== undefined && recommendUserData.length > 0 && recommendUserData.map((ele, index)=>{
             return <RecommendedUserCard data={ele}/>
         }) 
     }

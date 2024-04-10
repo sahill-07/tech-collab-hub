@@ -28,7 +28,6 @@ class ProjectController {
   async getProjectListForLoggedInUser(req, res){
     // fetch user projetclist and for each id fetch projects 
     try{
-      console.log('called');
       const { email } = req.body;
       const user = await UserDb.findOne({ email }, 'projectList');
       const projectIds = user.projectList.map(projectId => projectId.toString());

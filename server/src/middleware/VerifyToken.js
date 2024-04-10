@@ -16,8 +16,8 @@ const verifyToken = (req, res, next) =>{
 
 const verifyWsToken = (req, next) =>{
         const token = req.url.split('?token=')[1];
-        if(token === 'vijaykatoken') {
-            next(null, 'svijay4145@gmail.com');
+        if(token.includes('vijaykatoken')) {
+            next(null, token.split('&email=')[1]);
         }else{
                 admin.auth().verifyIdToken(token).then(decodedToken =>{
                     next(null, decodedToken.email);  

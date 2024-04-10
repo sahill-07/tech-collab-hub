@@ -1,14 +1,12 @@
 import React from 'react'
 import Button from '@mui/material/Button';
 
-const IconButtonMui = ({icon, text}) => {
+const IconButtonMui = ({icon, text, onClick}) => {
   return (
       <Button
       variant="contained"
       startIcon={icon}
-      onClick={() => {
-        // Handle button click
-      }}
+      onClick={onClick}
     >
       {text}
     </Button>
