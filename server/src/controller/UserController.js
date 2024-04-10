@@ -45,7 +45,7 @@ exports.user_controller = {
             const details = await UserDb.findOne({email: email});
             res.status(200).json(details);
         }catch(err){
-            res.status(400).json({
+            res.status(500).json({
                 success: false
             })
         }

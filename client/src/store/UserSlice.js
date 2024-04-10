@@ -13,7 +13,8 @@ const initialState = {
     "tech_stack_interest": null,
     "generated_tags": null,
     "knn": null,
-    "projectList": null
+    "projectList": null,
+    "token" : null,
 }
 
 
@@ -22,28 +23,15 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
       setUserSlice: (state, action) => {
-        console.log(action.payload);
-        const initstate = {
-          "email": null,
-          "username": null,
-          "githublink": null,
-          "is_currently_a_student": null,
-          "curr_semester": null,
-          "college_name": null,
-          "area_of_interest": null,
-          "experience": null,
-          "preferred_learning_resource": null,
-          "tech_stack_interest": null,
-          "generated_tags": null,
-          "knn": null,
-          "projectList": null
-      }
-      console.log(action.payload);
-          Object.keys(initstate).forEach(key=>{
-            if(action.payload !== null && action.payload !== undefined && action.payload.hasOwnProperty(key))
-              state[key] = action.payload[key];
-            else state[key] = null
-          })
+      
+      if(action.payload !== undefined && action.payload !== null){
+        Object.keys(initialState).forEach(key=>{
+          if(action.payload.action === 'makenull') state[key] = null
+          else if(action.payload.hasOwnProperty(key))
+            state[key] = action.payload[key];
+        })
+    }
+
       }
     }
         //   localStorage.setItem('BRANCH', action.payload.BRANCH);

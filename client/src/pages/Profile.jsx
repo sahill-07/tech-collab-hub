@@ -23,12 +23,13 @@ export const Profile = () => {
 
   const signOutF = ()=>{
     setIsSignOutButtonClicke(true);
-    dispatch(setUserSlice())
+    dispatch(setUserSlice({action: 'makenull'}))
   }
 
   useEffect(()=>{
+    console.log(usersliceData.username);
     if(usersliceData.username === null && isSignOutButtonClicked){
-      setIsSignOutButtonClicke(false);
+      console.log('signout');
       signOut(auth);
     }
   }, [usersliceData]);

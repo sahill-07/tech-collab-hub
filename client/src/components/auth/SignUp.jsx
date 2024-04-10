@@ -14,7 +14,6 @@ import { setBasicUtilsSlice } from "../../store/BasicUtilsSlice";
 export const SignUp = () => {
   const provider = new GoogleAuthProvider();
   const dispatch = useDispatch();
-  const [token, setToken] = useState(null);
 
   const [stepperActiveIndex, setStepperActiveIndex] = useState(0);
 
@@ -31,35 +30,7 @@ export const SignUp = () => {
     tech_stack_interest : [],
   })
 
-  useEffect(()=>{
-    dispatch(setBasicUtilsSlice({
-      progress_loading : {
-        percent : 20,
-        maxpercent : 100,
-        message : "Checking Google Sign-In Status..."
-      }
-    }))
-    var auth =  getAuth();
-    onAuthStateChanged(auth, async(user)=>{
-      dispatch(setBasicUtilsSlice({}))
-      if(user === null){
-        signInWithRedirect(auth, provider)
-        .catch((error) => {
-          const errorMessage = error.message;
-          console.log(errorMessage);
-          dispatch(setBasicUtilsSlice({
-            snackbar : {
-              msg : errorMessage,
-              severity : 'error'
-            }
-          }))
-        });
-      }else{
-        console.log(user);
-        setToken(user.accessToken);
-      }
-    })
-  },[])
+
 
 
   
@@ -74,7 +45,7 @@ export const SignUp = () => {
           <MyStepper allSteps={allSteps} activeIndex={stepperActiveIndex}/>
           {stepperActiveIndex === 0 && <Step1 setStepperActiveIndex={setStepperActiveIndex} userData={userdata} setUserData={setUserData}/>}
           {stepperActiveIndex === 1 && <Step2 setStepperActiveIndex={setStepperActiveIndex} userData={userdata} setUserData={setUserData}/>}
-          {stepperActiveIndex === 2 && <Step3 setStepperActiveIndex={setStepperActiveIndex} userData={userdata} setUserData={setUserData} token={token}/>}
+          {stepperActiveIndex === 2 && <Step3 setStepperActiveIndex={setStepperActiveIndex} userData={userdata} setUserData={setUserData}/>}
         </div>
       </div>
     </>

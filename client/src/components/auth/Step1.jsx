@@ -22,8 +22,6 @@ const Step1 = ({setStepperActiveIndex, userData, setUserData}) => {
     const urlRegex = /^https?:\/\/(?:www\.)?github\.com\/.*[^\/]$/;;
     if(urlRegex.test(githubLink) || githubLink === ''){
       setIsErrorInGithubLink(false);
-      // const username_ = githubLink.split('.com/')[1];
-      // setUserName(username_);
     }else {
       setIsErrorInGithubLink(true);
       setUserName('');

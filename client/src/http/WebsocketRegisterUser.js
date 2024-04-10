@@ -1,7 +1,9 @@
 import WebsocketUtils from '../utils/WebsocketUtils'
+import { store  } from '../store/index';
 
 class WebsocketRegisterUser {
-  main(token, data) {
+  main(data) {
+    const token = store.getState().UserSlice.token;
     console.log(token, data);
     // Establish WebSocket connection
     this.socket = new WebSocket(`ws://localhost:8080/registeruser?token=${token}`);
@@ -19,6 +21,7 @@ class WebsocketRegisterUser {
 
     this.socket.addEventListener("error", (error) => {
       console.error("WebSocket error:", error);
+      WebsocketUtils.processError(error)
     });
 
     this.socket.addEventListener("close", () => {

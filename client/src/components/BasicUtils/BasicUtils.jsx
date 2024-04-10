@@ -3,24 +3,41 @@ import { MySnackbar } from "../MySnackbar";
 import { useDispatch, useSelector } from "react-redux";
 import { setBasicUtilsSlice } from "../../store/BasicUtilsSlice";
 import ProgressLoading from "../basicComponents/TextBox/ProgressLoading";
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import FirebaseUtils from "../../utils/FirebaseUtils";
+
 
 const BasicUtils = () => {
+  const dispatch = useDispatch();
   const basicUtils = useSelector((state) => state.BasicUtilsSlice);
   const [isOpen, setOpen] = useState(false);
   useEffect(() => {
     console.log(basicUtils);
-    if (basicUtils.snackbar !== null) {
+    if (basicUtils.snackbar !== null && basicUtils.snackbar !== undefined) {
         setOpen(true);
     }
   }, [basicUtils]);
 
+  useEffect(() => {
+    dispatch(setBasicUtilsSlice({
+      progress_loading : {
+        percent : 40,
+        maxpercent : 70,
+        message : 'Checking Login status...'
+      }
+    }))
+    onAuthStateChanged(getAuth(), async(user)=>{
+      FirebaseUtils.handleAuthChange(user);
+    })
+
+}, [])
   return (
     <>
       {isOpen && <MySnackbar
         isOpen={isOpen}
         setOpen={setOpen}
-        msg={basicUtils.snackbar.msg}
-        severity={basicUtils.snackbar.severity}
+        msg={basicUtils.snackbar === undefined || basicUtils.snackbar === null ? '':basicUtils.snackbar.msg}
+        severity={basicUtils.snackbar === undefined || basicUtils.snackbar === null ? '':basicUtils.snackbar.severity}
       />}
 
       {

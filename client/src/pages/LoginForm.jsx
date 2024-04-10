@@ -5,14 +5,19 @@ import coder_animation from "../assets/coder_animation.json";
 import { SignUp } from "../components/auth/SignUp";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { GoogleAuthProvider, getAuth, onAuthStateChanged, signInWithRedirect } from 'firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   useNavigate
 } from "react-router-dom";
+import { setBasicUtilsSlice } from "../store/BasicUtilsSlice";
+import { store } from "../store";
 
 
 const LoginForm = () => {
+  const provider = new GoogleAuthProvider();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const usersliceData = useSelector((state)=> state.UserSlice);
   AOS.init({
     duration: 800,
@@ -20,6 +25,19 @@ const LoginForm = () => {
   useEffect(()=>{
     if(usersliceData.username !== null){
       navigate('/')
+    }else if((store.getState().BasicUtilsSlice.progress_loading === undefined || store.getState().BasicUtilsSlice.progress_loading === null) && usersliceData.email === null){
+      console.log(usersliceData.email);
+      signInWithRedirect(getAuth(), provider)
+        .catch((error) => {
+          const errorMessage = error.message;
+          console.log(errorMessage);
+          dispatch(setBasicUtilsSlice({
+            snackbar : {
+              msg : errorMessage,
+              severity : 'error'
+            }
+          }))
+        });
     }
   },[usersliceData])
   return (

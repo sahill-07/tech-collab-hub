@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setBasicUtilsSlice } from '../../store/BasicUtilsSlice';
 import WebsockteRegisterUser from '../../http/WebsocketRegisterUser';
 
-const Step3 = ({ setStepperActiveIndex, userData, setUserData, token }) => {
+const Step3 = ({ setStepperActiveIndex, userData, setUserData }) => {
     const dispatch = useDispatch();
     const [area_of_interest, setarea_of_interest] = useState(userData['area_of_interest']);
     const [experience, setexperience] = useState(userData['experience']);
@@ -25,7 +25,7 @@ const Step3 = ({ setStepperActiveIndex, userData, setUserData, token }) => {
                 maxpercent : 40 
             }
         }))
-        WebsockteRegisterUser.main(token, userData);
+        WebsockteRegisterUser.main(userData);
         setisOpenConfirmationDialogOpen(false);
     }
 

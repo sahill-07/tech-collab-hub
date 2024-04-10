@@ -12,54 +12,17 @@ import { useEffect, useState } from 'react';
 import LoginForm from './pages/LoginForm';
 import RecommendedUser from './pages/RecommendedUser';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { setUserSlice } from './store/UserSlice';
 import { getUserDetails } from './http';
 import BasicUtils from './components/BasicUtils/BasicUtils';
 
 function App() {
-  const dispatch = useDispatch();
-  const usersliceData = useSelector((state)=> state.UserSlice);
-  const utilsliceData = useSelector((state)=> state.BasicUtilsSlice);
-  
-
-
-  
-  useEffect(() => {
-      onAuthStateChanged(getAuth(), async(user)=>{
-        if(user !== null){
-          dispatch(setUserSlice({isloggedIn : true}));
-          if(usersliceData.username === null){
-            getUserDetails().then(res=>{
-              if(res.data === null){
-                // navigate('/auth');
-              }else
-              // setProfiledata(res.data);
-              console.log(res.data);
-              dispatch(setUserSlice(res.data));
-              dispatch(setUserSlice({isAlreadyAUser : true}));
-            })
-          }
-        }
-        else if(user === null) {
-          dispatch(setUserSlice({
-            isloggedIn : null,
-            isAlreadyAUser : null,
-            email : null,  
-            username : null,
-            githublink : null,
-            tags : [],
-            semester : null,
-          }))
-        }
-      })
-
-  }, [])
+  const usersliceData = useSelector((state)=> state.UserSlice);  
   
   return (
     <>
-    <Router>
     <BasicUtils/>
+    <Router>
       <Routes>
       <Route exact path="/" element={<Homepage/>}>
         <Route exact path='/collab' element={<RecommendedUser/>}/>
@@ -67,7 +30,6 @@ function App() {
         <Route exact path='/profile' element={<Profile/>}/>
       </Route>
       <Route exact path='/auth' element={<LoginForm/>}/>
-      <Route exact path='/auth/help' element={<Projects/>}/>
       <Route exact path='/projects/projectdetail/:id' element={<ProjectDetail/>}/>
       </Routes> 
     </Router>

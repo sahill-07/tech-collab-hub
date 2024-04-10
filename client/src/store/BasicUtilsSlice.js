@@ -15,28 +15,16 @@ export const basicUtilsSlice = createSlice({
     reducers: {
       setBasicUtilsSlice: (state, action) => {
 
-        const defaultstate = {
-            snackbar : null,
-            progress_loading : null
-        }
-
-
-        if(action.payload.snackbar !== undefined && action.payload.snackbar !== null){
-          state.snackbar = action.payload.snackbar;
-        }else {
-          state.snackbar = defaultstate.snackbar;
-        }
-
-        if(action.payload.progress_loading !== undefined && action.payload.progress_loading !== null){
-          state.progress_loading = action.payload.progress_loading
-        }else {
-          state.progress_loading = defaultstate.progress_loading;
-        }
+        Object.keys(initialState).forEach(key=>{
+          if(action.payload.action === 'makenull')
+            state[key] = null;
+          else
+            state[key] = action.payload[key];
+        })
       }
     },
   });
   
-  // Action creators are generated for each case reducer function
   export const { setBasicUtilsSlice } = basicUtilsSlice.actions;
   
   export default basicUtilsSlice.reducer;
