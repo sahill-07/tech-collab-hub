@@ -33,7 +33,7 @@ const BasicUtils = () => {
 }, [])
   return (
     <>
-      {isOpen && <MySnackbar
+      {isOpen && basicUtils.snackbar !== undefined && basicUtils.snackbar !== null  && <MySnackbar
         isOpen={isOpen}
         setOpen={setOpen}
         msg={basicUtils.snackbar === undefined || basicUtils.snackbar === null ? '':basicUtils.snackbar.msg}
@@ -41,7 +41,7 @@ const BasicUtils = () => {
       />}
 
       {
-        basicUtils.progress_loading !== null && basicUtils.progress_loading.maxpercent < 100 && <ProgressLoading data={basicUtils.progress_loading}/>
+        basicUtils.progress_loading !== null && basicUtils.progress_loading !== undefined && basicUtils.progress_loading.maxpercent < 100 && <ProgressLoading data={basicUtils.progress_loading}/>
       }
     </>
   );

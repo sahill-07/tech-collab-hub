@@ -1,9 +1,9 @@
 const ProjectDb = require("../models/Project");
 const UserDb = require('../models/User');
+const express = require('express');
 
-exports.project_controller = {
-  getProjectList: (req, res) => {
-    const filters = req.params.filters.split(",");
+class ProjectController {
+  getProjectList(req, res) {
     let pipeline = [
       {$limit : 15}
     ];
@@ -18,89 +18,27 @@ exports.project_controller = {
           success: false,
         });
       });
-  },
+  }
 
-  getProjectById: (req, res) => {
-    const id = req.params.id;
-    ProjectDb.findById(id)
-      .then((list) => {
-        res.status(200).json(list);
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(400).json({
-          success: false,
-        });
-      });
-  },
-
-  postProject: (req, res) => {
-    req.body.POSTED_BY = req.body.email;
-    const {
-      PROJECT_NAME,
-      POSTED_BY,
-      DESCRIPTION,
-      PROJECT_IMAGE_URL,
-      GITHUB_LINK,
-      LINKEDIN_LINK,
-      TAGS,
-    } = req.body;
-    if (
-      PROJECT_NAME &&
-      POSTED_BY &&
-      DESCRIPTION &&
-      PROJECT_IMAGE_URL &&
-      GITHUB_LINK &&
-      LINKEDIN_LINK &&
-      TAGS
-    ) {
-      const new_project = new ProjectDb(req.body);
-      new_project
-        .save()
-        .then((item) => {
-          UserDb.updateOne(
-            {USER_EMAIL: req.body.email},
-            {$push : {REPOSITORIES: {
-              id: item._id,
-              NAME: item.PROJECT_NAME
-            }}}
-          ).then(res=>{
-          })
-          res.status(200).json({
-            success: true,
-          });
-        })
-        .catch((err) => {
-          res.status(400).json({
-            success: false,
-          });
-        });
-    } else {
-      res.status(400).json({
-        success: false,
-        message: "Please Complete All fields",
-      });
+  /**
+ * Controller to get ProjectList for LoggedInUser
+ * @param {express.Request} req - The request object.
+ * @param {express.Response} res - The response object.
+ */
+  async getProjectListForLoggedInUser(req, res){
+    // fetch user projetclist and for each id fetch projects 
+    try{
+      console.log('called');
+      const { email } = req.body;
+      const user = await UserDb.findOne({ email }, 'projectList');
+      const projectIds = user.projectList.map(projectId => projectId.toString());
+      const projects = await ProjectDb.find({ _id: { $in: projectIds } });
+      res.status(200).send(projects);
+    }catch(err){
+      console.log(err);
+      res.status(500).json(err.message);
     }
-  },
+  }
+}
 
-  getFilters: (req, res) => {
-    const pipeline = [
-      {
-        $project: {
-          _id: 0,
-          TAGS: 1,
-        },
-      },
-    ];
-    ProjectDb.aggregate(pipeline)
-      .then((list) => {
-        res.status(200).json(list);
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(400).json({
-          success: false,
-        });
-      });
-  },
-};
+module.exports = new ProjectController();

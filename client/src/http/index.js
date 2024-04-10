@@ -46,13 +46,12 @@ const api = async (endpoint, data,method)=>{
         }
 
 }
-export const getBookList = async (clg, sem, branch)=> await api(`/book/booklist/${clg}/${sem}/${branch}`, '', 'get')
-export const getBookDetailsById = async (id)=> await api(`/book/bookid/${id}`, '', 'get')
-export const postBook = async (json)=> await api(`/book/addbook`, json, 'post')
+
+export const getProjectListForLoggedOutUsers = async ()=> await api(`/project/projectlist/all`, '', 'get')
+export const getProjectListForLoggedInUsers = async ()=> await api(`/project/projectlist/`, '', 'get')
 
 export const postProject = async (json)=> await api(`/project/addproject`, json, 'post');
 export const getFilters = async ()=> await api(`/project/getfilter`, '', 'get')
-export const getProjectList = async (filters)=> await api(`/project/projectlist/${filters}`, '', 'get')
 export const getProjectDetailsById = async (id)=> await api(`/project/projectid/${id}`, '', 'get')
 
 export const postUser = async (data)=> await api('/user/addUser', data, 'post');
