@@ -17,7 +17,6 @@ const Step3 = ({ setStepperActiveIndex, userData, setUserData }) => {
     const [isConfirmationDialogOpen, setisOpenConfirmationDialogOpen] = useState(false);
 
     const handleConfirmedButtonClicked = ()=>{
-        console.log(userData);
         dispatch(setBasicUtilsSlice({
             progress_loading : {
                 percent : 10,

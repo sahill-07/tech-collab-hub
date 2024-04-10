@@ -7,21 +7,15 @@ import { MdGroups3 } from "react-icons/md";
 import { ImProfile } from "react-icons/im";
 import { useLocation } from "react-router-dom";
 import { IoLogInSharp } from 'react-icons/io5'
-import { GoogleAuthProvider, getAuth, onAuthStateChanged } from 'firebase/auth';
-import loading_animation from '../assets/Hourglass.gif';
-import { useDispatch} from "react-redux";
-import { setUserSlice } from "../store/UserSlice";
-import { setBasicUtilsSlice } from "../store/BasicUtilsSlice";
+import { useSelector} from "react-redux";
 
 export const Navbar = (props) => {
-  const dispatch = useDispatch();
 
   const [selectedItem, setSelectedItem] = useState(0);
   const stickyRef = useRef(null);
   const [isSticky, setIsSticky] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isAuthLoading, setIsAuthLoading] = useState(true);
   const path = useLocation();
+  const usersliceData = useSelector((state)=>state.UserSlice);
 
   useEffect(()=>{
     const pathName = path.pathname;
@@ -44,34 +38,10 @@ export const Navbar = (props) => {
     };
   }, []);
 
-  const provider = new GoogleAuthProvider();
   const navigate = useNavigate();
   const login = ()=>{
     navigate('/auth')
   }
-
-  useEffect(() => {
-    onAuthStateChanged(getAuth(), async (user) => {
-      setIsAuthLoading(false)
-      if (user !== null) {
-        console.log(user);
-        setIsLoggedIn(true);
-        dispatch(setUserSlice({isloggedIn : true}));
-      } else {
-        dispatch(setUserSlice({
-          isloggedIn : null,
-          isAlreadyAUser : null,
-          email : null,
-          username : null,
-          githublink : null,
-          tags : [],
-          semester : null,
-        }))
-        dispatch(setUserSlice({isloggedIn : false}));
-        setIsLoggedIn(false);
-      }
-    });
-  }, [])
   
 
   return (
@@ -100,22 +70,15 @@ export const Navbar = (props) => {
             className="h-[70%] background-gradient"
             style={{ width: "1px" }}
             ></span>
-          {isLoggedIn && !isAuthLoading && <Link to="profile" className={`${selectedItem === 2 ? 'text-purple-700':''} flex gap-1 min-w-fit items-center hover:text-purple-500 cursor-pointer`}>
+          {usersliceData.username !== null && usersliceData !== undefined && <Link to="profile" className={`${selectedItem === 2 ? 'text-purple-700':''} flex gap-1 min-w-fit items-center hover:text-purple-500 cursor-pointer`}>
             <ImProfile className="w-6 h-6"/>
             <p>My Profile</p>
           </Link>}
           {
-            !isLoggedIn && !isAuthLoading &&
+            usersliceData.username === null && usersliceData !== undefined &&
             <div className="flex items-center bg-blue-500 hover:bg-blue-600 shadow-lg hover:shadow-xl text-white py-1.5 px-3 rounded-lg" onClick={login}>
               <IoLogInSharp className="w-6 h-6"/>
               <button>Login</button>
-            </div>
-          }
-          {
-            isAuthLoading && 
-            <div className="flex">
-              <img src={loading_animation} alt="" className="h-7 w-7"/>
-              <p>Loading...</p>
             </div>
           }
           </div>

@@ -8,16 +8,11 @@ import {
 import { Profile } from './pages/Profile';
 import { Projects } from './pages/Projects';
 import { ProjectDetail } from './pages/ProjectDetail';
-import { useEffect, useState } from 'react';
 import LoginForm from './pages/LoginForm';
 import RecommendedUser from './pages/RecommendedUser';
-import { useDispatch, useSelector } from 'react-redux';
-import { setUserSlice } from './store/UserSlice';
-import { getUserDetails } from './http';
 import BasicUtils from './components/BasicUtils/BasicUtils';
 
 function App() {
-  const usersliceData = useSelector((state)=> state.UserSlice);  
   
   return (
     <>
