@@ -1,5 +1,4 @@
 const app = require('./app');
-require('./wsindex')
 require('dotenv').config();
 
 app.listen(process.env.PORT, ()=>{

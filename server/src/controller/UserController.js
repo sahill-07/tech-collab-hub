@@ -16,14 +16,12 @@ exports.user_controller = {
         }
     },
 
-    postNewUser : async (ws, client_email, message)=>{
+    postNewUser : async (req, res)=>{
         try{
-            await UserDbService.addNewUser(ws, client_email, message);
-            ws.close()
+            await UserDbService.addNewUser(res, req.body.email, req.body);
         }catch(err){
-            ws.send(WsResponseType.buildErrorResponse(err.message))
-            ws.close();
-            console.log(`Encoutered Error for ${client_email} with message ${err.message}`);
+            res.status(500).json(err.message)
+            console.log(`Encoutered Error with message ${err.message}`);
         }
     },
 

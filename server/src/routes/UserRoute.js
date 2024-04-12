@@ -9,6 +9,8 @@ const { verifyToken } = require('../middleware/VerifyToken')
 // router.post('/addNewUser', verifyToken, UserController.user_controller.postNew);
 
 router.get('/userDetail', verifyToken, UserController.user_controller.getMyProfile) //using
+router.post('/', verifyToken, UserController.user_controller.postNewUser)
+
 router.get('/getrecommendeduser', verifyToken, UserController.user_controller.getRecommendedUser);
 router.get('/userDetail/:id', UserController.user_controller.getById);
 

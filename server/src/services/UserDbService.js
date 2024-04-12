@@ -4,79 +4,79 @@ const { response } = require('express');
 const natural = require('natural');
 const { Matrix } = require('ml-matrix');
 const ProjectRecommendationAlgo = require('./ProjectRecommendationAlgo');
-const WsResponseType = require('../data/WsResponseType');
+const UserAnalytics = require('./UserAnalytics');
 
 class UserDbService {
+    requiredFields = {
+        username: 'string',
+        githublink: 'string',
+        is_currently_a_student: 'string',
+        curr_semester: 'string',
+        college_name: 'string',
+        area_of_interest: 'array',
+        experience: 'array',
+        preferred_learning_resource: 'array',
+        tech_stack_interest: 'array'
+      };
 
+// res, req.body.email, req.body
+    async addNewUser(res, client_email, data){
 
-    async addNewUser(ws, client_email, data){
-        try{
-            data = JSON.parse(data);
-            console.log(data);
-        }catch(err){
-            ws.send('HTTP/1.1 400 Bad Request\r\n\r\n');
-            ws.close();
-            return;
-        }
 
             const validateJson = this.validateJson(data);
             if(validateJson !== true){
-                console.log(validateJson);
-                ws.send(validateJson)
-                ws.close();
+                res.status(400).json(validateJson)
                 return ;
+            }else{
+                data = this.getData(data);
             }
-            ws.send(WsResponseType.buildProgressResponse(20, 40, 'Fetching User github repos...'));
-            const { generated_tags, generated_language } = await this.hitRequestAndExtractTag(data.githublink.split('github.com/')[1]);
+
+            const github_user_id = data.githublink.split('github.com/')[1];
+            console.log(data);
+            const { generated_tags, generated_language } = await this.hitRequestAndExtractTag(github_user_id);
             data.generated_tags = generated_tags;
 
 
-            ws.send(WsResponseType.buildProgressResponse(41, 60, 'Building User List Preference...'))
             data.knn = await this.calculateKnn(generated_tags, client_email);
 
-            ws.send(WsResponseType.buildProgressResponse(61, 75, 'Building Project prefernce list...'))
             const projectList = await ProjectRecommendationAlgo.main(generated_tags, client_email, generated_language);
             data.projectList = projectList;
             console.log(projectList);
+            
+            const githubAnalytics = await UserAnalytics.fetchGitHubStats(github_user_id)
+            data = {...data, ...githubAnalytics}
 
             const user = await new User({...data, email : client_email});
             const savedNote = await user.save();
 
-            ws.send(WsResponseType.buildProgressResponse(90, 100, 'Completed'))
-            ws.send(WsResponseType.buildUserDataResponse(savedNote));
+            res.status(200).json(savedNote);
     }
+
+
     validateJson(jsonData) {
-        const requiredFields = {
-          username: 'string',
-          githublink: 'string',
-          is_currently_a_student: 'string',
-          curr_semester: 'string',
-          college_name: 'string',
-          area_of_interest: 'array',
-          experience: 'array',
-          preferred_learning_resource: 'array',
-          tech_stack_interest: 'array'
-        };
-      
-        for (const field in requiredFields) {
+        for (const field in this.requiredFields) {
           if (!(field in jsonData)) {
             return `Field '${field}' is missing in the JSON data.`;
           }
       
-          const expectedType = requiredFields[field];
+          const expectedType = this.requiredFields[field];
           const actualType = Array.isArray(jsonData[field]) ? 'array' : typeof jsonData[field];
       
           if (actualType !== expectedType) {
-            return JSON.stringify({
-                type : WsResponseType.error,
-                severity : 'error',
-                msg :(`Field '${field}' has invalid type. Expected type: '${expectedType}', Actual type: '${actualType}'.`)
-            });
+            return {message: `Field '${field}' has invalid type. Expected type: '${expectedType}', Actual type: '${actualType}'.`};
           }
         }
 
-        return true;      
+        return true;     
       }
+
+    getData(data){
+        let newdata = {};
+        for(const field in this.requiredFields){
+            newdata[field] = data[field]
+        }
+        return newdata;
+    }
       
 
     async hitRequestAndExtractTag(username){

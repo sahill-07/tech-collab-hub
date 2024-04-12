@@ -89,6 +89,15 @@ const userSchema = new mongoose.Schema({
             },
             message: props => `${props.value} is not a valid array or is empty.`
         }
+    },
+    "total_commits": {
+        type : String
+    },
+    "total_pull_request": {
+        type: String
+    },
+    "star_earned": {
+        type : String
     }
     
 

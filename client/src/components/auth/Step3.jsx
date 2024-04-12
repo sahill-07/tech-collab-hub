@@ -6,7 +6,8 @@ import MyCheckbox from '../basicComponents/MyCheckbox';
 import MyAlertDialog from '../basicComponents/MyAlertDialog';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBasicUtilsSlice } from '../../store/BasicUtilsSlice';
-import WebsockteRegisterUser from '../../http/WebsocketRegisterUser';
+import { postUser } from '../../http';
+import { setUserSlice } from '../../store/UserSlice';
 
 const Step3 = ({ setStepperActiveIndex, userData, setUserData }) => {
     const dispatch = useDispatch();
@@ -24,7 +25,12 @@ const Step3 = ({ setStepperActiveIndex, userData, setUserData }) => {
                 maxpercent : 40 
             }
         }))
-        WebsockteRegisterUser.main(userData);
+        postUser(userData).then(res=>{
+            if(res.status === 200){
+                dispatch(setUserSlice(res.data))
+                dispatch(setBasicUtilsSlice({action : 'makenull'}))
+            }
+        })
         setisOpenConfirmationDialogOpen(false);
     }
 

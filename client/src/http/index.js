@@ -54,9 +54,9 @@ export const postProject = async (json)=> await api(`/project/addproject`, json,
 export const getFilters = async ()=> await api(`/project/getfilter`, '', 'get')
 export const getProjectDetailsById = async (id)=> await api(`/project/projectid/${id}`, '', 'get')
 
-export const postUser = async (data)=> await api('/user/addUser', data, 'post');
-export const postNewUser = async (data)=> await api('/user/addNewUser', data, 'post');
+export const postUser = async (data)=> await api('/user', data, 'post');
 export const getUserDetails = async ()=> await api('/user/userDetail', '', 'get');
+
 export const getUserDetailsUsingid = async (id)=> await api('/user/userDetail/' + id, "", 'get');
 export const getUserRecommendation = async (id)=> await api('/user/getrecommendeduser', "", 'get');
 
