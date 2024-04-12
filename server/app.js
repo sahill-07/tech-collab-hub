@@ -26,7 +26,6 @@ app.use('/user', userRouter);
 
 
 app.get('/auth', verifyToken ,(req, res)=>{
-    console.log(req.headers);
     return res.json({greeting: "you are a verified user"});
 })
 
