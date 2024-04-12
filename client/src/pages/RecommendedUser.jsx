@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserRecommendation } from '../http';
+import { getUserRecommendation, getUserRecommendationForLoggedOutUser } from '../http';
 import { setRecommendedUserSlice } from '../store/RecommendedUserSlice';
 import RecommendedUserCard from '../components/RecommendeUser/RecommendedUserCard';
 import AOS from "aos";
@@ -17,6 +17,12 @@ const RecommendedUser = () => {
     useEffect(()=>{
         if(email !== null && recommendUserData.length === 0){
             getUserRecommendation().then(res=>{
+                if(res.status === 200){
+                    dispatch(setRecommendedUserSlice(res.data));
+                }
+            })
+        }else {
+            getUserRecommendationForLoggedOutUser().then(res=>{
                 if(res.status === 200){
                     dispatch(setRecommendedUserSlice(res.data));
                 }

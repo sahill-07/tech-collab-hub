@@ -1,4 +1,3 @@
-const WsResponseType = require('../data/WsResponseType');
 const UserDb = require('../models/User');
 const UserDbService = require('../services/UserDbService');
 
@@ -72,6 +71,29 @@ exports.user_controller = {
         }catch(err){
             res.status(500).json({
                 success: false
+            })
+        }
+    },
+
+    getRecommendedUserForLoggedOutUser : async (req, res)=>{
+        try{
+            let pipeline = [
+                {$limit : 15}
+              ];
+              
+              UserDb.aggregate(pipeline)
+                .then((list) => {
+                  res.status(200).json(list);
+                })
+                .catch((err) => {
+                  console.log(err);
+                  res.status(500).json({
+                    success: false,
+                  });
+                });
+        }catch(err){
+            res.status(500).json({
+                message : err.message
             })
         }
     }

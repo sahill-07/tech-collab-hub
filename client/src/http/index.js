@@ -59,4 +59,5 @@ export const getUserDetails = async ()=> await api('/user/userDetail', '', 'get'
 
 export const getUserDetailsUsingid = async (id)=> await api('/user/userDetail/' + id, "", 'get');
 export const getUserRecommendation = async (id)=> await api('/user/getrecommendeduser', "", 'get');
+export const getUserRecommendationForLoggedOutUser = async ()=> await api('/user/getrecommendeduserloggedout', "", 'get');
 
