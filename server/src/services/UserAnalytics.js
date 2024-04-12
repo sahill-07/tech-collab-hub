@@ -26,11 +26,6 @@ class UserAnalytics {
             // Extracting Total PRs
             const total_prs = desc_content.split(',')[2].split(': ')[1].trim();
       
-            console.log({
-              total_commits: total_commits,
-              total_pull_request: total_prs,
-              star_earned: start_earn
-            });
       
             return {
               total_commits: total_commits,

@@ -32,7 +32,6 @@ class UserDbService {
             }
 
             const github_user_id = data.githublink.split('github.com/')[1];
-            console.log(data);
             const { generated_tags, generated_language } = await this.hitRequestAndExtractTag(github_user_id);
             data.generated_tags = generated_tags;
 
@@ -41,7 +40,6 @@ class UserDbService {
 
             const projectList = await ProjectRecommendationAlgo.main(generated_tags, client_email, generated_language);
             data.projectList = projectList;
-            console.log(projectList);
             
             const githubAnalytics = await UserAnalytics.fetchGitHubStats(github_user_id)
             data = {...data, ...githubAnalytics}
@@ -204,7 +202,6 @@ class knearest {
                 }
             }
             });
-        console.log(finalmatrix);
         return finalmatrix[myemail];
 
     }
