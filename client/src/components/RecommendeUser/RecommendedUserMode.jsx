@@ -11,7 +11,7 @@ import CodeIcon from '@mui/icons-material/Code';
 
 const RecommendedUserMode = ({ selected, setSelected }) => {
   const handleGithubClick = () => {
-    window.open(selected.repo_link);
+    window.open(selected.githublink);
   };
   const addToSavedList = () => {};
 

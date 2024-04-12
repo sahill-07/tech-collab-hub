@@ -6,6 +6,7 @@ import RecommendedUserCard from '../components/RecommendeUser/RecommendedUserCar
 import AOS from "aos";
 import "aos/dist/aos.css";
 import RecommendedUserMode from '../components/RecommendeUser/RecommendedUserMode';
+import ProjectCardSkeleton from '../components/Projects/ProjectCardSkeleton';
 
 
 const RecommendedUser = () => {
@@ -37,6 +38,29 @@ const RecommendedUser = () => {
         }) 
     }
     </div>
+    {
+        (recommendUserData === null || recommendUserData === undefined || recommendUserData.length === 0) && 
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mx-4 gap-3'>
+            <ProjectCardSkeleton/>
+            <ProjectCardSkeleton/>
+            <ProjectCardSkeleton/>
+            <ProjectCardSkeleton/>
+            <ProjectCardSkeleton/>
+            <ProjectCardSkeleton/>
+            <ProjectCardSkeleton/>
+            <ProjectCardSkeleton/>
+            <ProjectCardSkeleton/>
+            <ProjectCardSkeleton/>
+            <ProjectCardSkeleton/>
+            <ProjectCardSkeleton/>
+            <ProjectCardSkeleton/>
+            <ProjectCardSkeleton/>
+            <ProjectCardSkeleton/>
+            <ProjectCardSkeleton/>
+            <ProjectCardSkeleton/>
+            <ProjectCardSkeleton/>
+        </div>
+    }
     <RecommendedUserMode selected={selected} setSelected={setSelected}/>
     <br/><br/>
     </div>
