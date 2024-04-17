@@ -1,25 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { Profile1 } from '../components/Profile_Page_Components/Profile1';
-import { Activities } from '../components/Profile_Page_Components/Activities';
-import { LinksSection } from '../components/Profile_Page_Components/LinksSection';
 import { UserDetails } from '../components/Profile_Page_Components/UserDetails';
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { getUserDetails, getUserDetailsUsingid, postNewUser } from "../http";
+import { getAuth, signOut } from 'firebase/auth'
+import { Link } from "react-router-dom";
 import Lottie from 'lottie-react';
 import loading_animation from '../assets/loading.json';
 import { useDispatch, useSelector } from "react-redux";
 import { setUserSlice } from "../store/UserSlice";
+import Profile3 from "../components/Profile_Page_Components/Profile3";
+import '../styles/ScrollbarHide.css'
+import Profile2 from "../components/Profile_Page_Components/Profile2";
 
 
 export const Profile = () => {
-  const location = useLocation();
   const usersliceData = useSelector((state)=> state.UserSlice);
   const [isLogged, setIsLogged] = useState(true);
   const auth = getAuth();
   const [isSignOutButtonClicked, setIsSignOutButtonClicke] = useState(false);
   const dispatch = useDispatch();
-  const navigate =useNavigate();
 
   const signOutF = ()=>{
     setIsSignOutButtonClicke(true);
@@ -59,22 +57,25 @@ export const Profile = () => {
           className="grid sm:grid-cols-1 md:grid-cols-3 gap-6 p-4"
         >
           <div id="profile" className="flex bg-white rounded-lg p-3 shadow-lg">
-            <Profile1 username={usersliceData.username} />
+            <Profile1 data={usersliceData} />
           </div>
           <div
             id="user-details"
             className="bg-white rounded-lg p-3 md:col-span-2 "
           >
-            <UserDetails email={usersliceData.email} githublink={usersliceData.githublink} username={usersliceData.username} collegeName={usersliceData.collegeName} semester={usersliceData.semester} tags={usersliceData.tags} />
+            <UserDetails data={usersliceData} />
           </div>
-          {/* <div id="user-link" className="bg-white rounded-lg p-3 ">
-            <LinksSection data={profiledata} />
-          </div> */}
           <div
             id="user-activity"
-            className="bg-white rounded-lg p-3 md:col-span-3"
+            className="bg-white rounded-lg p-3 overflow-scroll scrollbar-hide"
           >
-            {/* <Activities data={usersliceData} /> */}
+            <Profile2 data={usersliceData}/>
+          </div>
+          <div
+            id="user-activity"
+            className="bg-white rounded-lg p-3 md:col-span-2 overflow-scroll scrollbar-hide"
+          >
+            <Profile3 data={usersliceData}/>
           </div>
         </section>}
 

@@ -15,6 +15,9 @@ const initialState = {
     "knn": null,
     "projectList": null,
     "token" : null,
+    "total_commits" : null,
+    total_pull_request : null,    
+    star_earned : null
 }
 
 
