@@ -63,4 +63,5 @@ export const getFreindList = async ()=> await api('/user/getFreindList', '', 'ge
 export const getUserDetailsUsingid = async (id)=> await api('/user/userDetail/' + id, "", 'get');
 export const getUserRecommendation = async (id)=> await api('/user/getrecommendeduser', "", 'get');
 export const getUserRecommendationForLoggedOutUser = async ()=> await api('/user/getrecommendeduserloggedout', "", 'get');
+export const addRepoToSavedList = async (repo_link)=> await api(`/user/addSavedRepo/${repo_link}`, {}, 'post');
 

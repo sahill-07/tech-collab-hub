@@ -159,6 +159,29 @@ exports.user_controller = {
                 success : true 
             })
         }catch(err){
+            
+        }
+    },
+
+    saveRepo : async (req, res)=>{
+        try{
+            console.log('called');
+            var savedRepo = await UserDb.findOne({ email:  req.body.email}, {_id:0, saved_repo : 1});
+            if(savedRepo.saved_repo === undefined || savedRepo.saved_repo === null)
+                savedRepo = [];
+            else 
+                savedRepo = savedRepo.saved_repo;
+            savedRepo.push(req.params.repo_link);
+            savedRepo = Array.from(new Set(savedRepo));
+            await UserDb.updateOne(
+                {email : req.body.email},
+                {$set : {saved_repo : savedRepo}},
+                { upsert : true}
+            )
+            res.status(200).json({
+                success : true
+            })
+        }catch(er){
             res.status(500).json({
                 message : "INTERNAL SERVER ERROR"
             })

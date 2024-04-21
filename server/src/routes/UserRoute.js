@@ -15,6 +15,7 @@ router.get('/getrecommendeduserloggedout', UserController.user_controller.getRec
 router.post('/addToChatList/:freinduid', verifyToken, UserController.user_controller.addFreind)
 router.post('/addToGroupChatList/:topic', verifyToken, UserController.user_controller.addGroupChat)
 router.get('/getFreindList', verifyToken, UserController.user_controller.getFreindList)
+router.post('/addSavedRepo/:repo_link', verifyToken, UserController.user_controller.saveRepo);
 
 router.get('/userDetail/:id', UserController.user_controller.getById);
 

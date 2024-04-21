@@ -7,14 +7,44 @@ import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import ChatIcon from '@mui/icons-material/Chat';
 import IconButtonMui from '../basicComponents/Button/IconButtonMui';
 import { useNavigate } from 'react-router-dom';
+import { addRepoToSavedList } from '../../http';
+import { setBasicUtilsSlice } from '../../store/BasicUtilsSlice';
+import { store } from '../../store/index'
+import { setUserSlice } from '../../store/UserSlice';
+import { useDispatch } from 'react-redux';
 
 const ProjectModal = ({selected, setSelected}) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleGithubClick = ()=>{
     window.open(selected.repo_link)
   }
   const addToSavedList = ()=>{
-
+    addRepoToSavedList(selected.repo_name).then(res=>{
+      if(res.status === 200){
+        let sav = [];
+        if(store.getState().UserSlice.saved_repo.length > 0)
+        sav = [...store.getState().UserSlice.saved_repo];
+        if(!sav.includes(selected.repo_name))
+          sav.push(selected.repo_name);
+        dispatch(setUserSlice({
+          saved_repo : sav
+        }))
+        dispatch(setBasicUtilsSlice({
+          snackbar : {
+            msg : "Added Repository to saved list", 
+            severity : "success"
+          }
+        }))
+      }else{
+        dispatch(setBasicUtilsSlice({
+          snackbar : {
+            msg : "Failed to add Repository to saved list", 
+            severity : "error"
+          }
+        }))
+      }
+    })
   }
 
   const openChat = ()=>{

@@ -18,7 +18,8 @@ const initialState = {
     "token" : null,
     "total_commits" : null,
     total_pull_request : null,    
-    star_earned : null
+    star_earned : null,
+    "saved_repo" : []
 }
 
 

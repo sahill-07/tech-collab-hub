@@ -16,6 +16,7 @@ export const basicUtilsSlice = createSlice({
       setBasicUtilsSlice: (state, action) => {
 
         Object.keys(initialState).forEach(key=>{
+          console.log(key);
           if(action.payload.action === 'makenull')
             state[key] = null;
           else
