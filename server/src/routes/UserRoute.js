@@ -13,6 +13,7 @@ router.post('/', verifyToken, UserController.user_controller.postNewUser)
 router.get('/getrecommendeduser', verifyToken, UserController.user_controller.getRecommendedUser);
 router.get('/getrecommendeduserloggedout', UserController.user_controller.getRecommendedUserForLoggedOutUser)
 router.post('/addToChatList/:freinduid', verifyToken, UserController.user_controller.addFreind)
+router.get('/getFreindList', verifyToken, UserController.user_controller.getFreindList)
 
 router.get('/userDetail/:id', UserController.user_controller.getById);
 

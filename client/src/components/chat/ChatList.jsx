@@ -1,12 +1,28 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { getFreindList } from '../../http'
+import ChatListCard from './ChatListCard';
+import { useSelector } from 'react-redux';
 
-const ChatList = () => {
+const ChatList = ({setSelectedChat}) => {
+  const [freindList, setFreindList] = useState([]);
+  const userdetails = useSelector(state=>state.UserSlice);
+  useEffect(()=>{
+    if(userdetails.token !== null && userdetails.token !== ''){
+      getFreindList().then(res=>{
+        console.log(res);
+        if(res.status === 200){
+          setFreindList(res.data);
+        }
+      })
+    }
+  },[userdetails])
   return (
-    <div className='flex gap-2 flex-col'>
-      <button className='hover:text-white hover:bg-blue-700 border border-black p-2'>vijay</button>
-      <button className='hover:text-white hover:bg-blue-700 border border-black p-2'>gupta</button>
-      <button className='hover:text-white hover:bg-blue-700 border border-black p-2'>sahil</button>
-      <button className='hover:text-white hover:bg-blue-700 border border-black p-2'>bangar</button>
+    <div className='flex gap-2 flex-col w-full'>
+      {
+        freindList.map((freind, index)=>{
+          return <ChatListCard data={freind} key={freind.uid} setSelectedChat={setSelectedChat} index={index}/>
+        })
+      }
     </div>
   )
 }

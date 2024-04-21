@@ -4,22 +4,27 @@ import IconButtonMui from "../basicComponents/Button/IconButtonMui";
 import SendIcon from "@mui/icons-material/Send";
 import FirebaseMessageUtils from "../../utils/FirebaseMessageUtils";
 import { useSelector } from "react-redux";
-import { getDatabase, ref, get, child, push, onValue, onChildAdded } from "firebase/database";
+import { getDatabase, ref, off, onChildAdded } from "firebase/database";
 import { addToChatListApi } from "../../http";
 
 
-const ChatModal = () => {
+const ChatModal = ({selectedChat}) => {
   const [chatWith, setChatWith] = useState(null);
   const [messageList, setMessageList] = useState([]);
   const { uid } = useSelector(state=>state.UserSlice);
   const [typedmessage, setTypedMessage] = useState('');
+  const [listeners, setListeners] = useState([]);
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const chatWithParam = params.get("with");
-    if(chatWithParam !== '' && chatWithParam !== null)
+    if(chatWithParam !== '' && chatWithParam !== null && selectedChat === null)
         setChatWith(chatWithParam);
   }, []);
 
+  useEffect(()=>{
+    if(selectedChat !== null)
+    setChatWith(selectedChat)
+  },[selectedChat])
   useEffect(()=>{
     async function getmsg(){
 
@@ -28,6 +33,15 @@ const ChatModal = () => {
         const path2 = `messages/${chatWith}/${uid}`;  //add observer
         const db = getDatabase();
         const messageref = ref(db, path2);
+        for(const lis of listeners){
+          console.log('removing listendr ' ,lis);
+          off(ref(db, lis))
+        }
+        setListeners([]);
+        setListeners(listeners=>{
+          listeners.push(path2);
+          return listeners;
+        })
         onChildAdded(messageref, (snapshot) => {
             const msg = snapshot.val();
             console.log(msg);
@@ -71,8 +85,15 @@ const ChatModal = () => {
   };
 
   useEffect(()=>{
-    console.log(messageList);
-  },[messageList])
+    return () => {
+      console.log('running unmounting');
+      console.log(listeners);
+      for(const lis of listeners)
+        off(ref(getDatabase(), lis))
+
+
+    };
+  },[])
 
 
   return (

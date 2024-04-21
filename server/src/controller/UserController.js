@@ -89,35 +89,54 @@ exports.user_controller = {
 
     addFreind : async (req, res)=>{
         try{
-
-            var freindList = await FreindDb.findOne({ uid: req.body.uid }, {_id:0, freinds : 1});
-            const userDetails = await UserDb.findOne({ uid: req.params.freinduid }, { username: 1, _id: 0, uid : 1 });
-        if(freindList === null){
-            freindList = [];
-        }else
-            freindList = freindList.freinds;
-
-        if(userDetails !== null)
-            freindList.push(userDetails);
-        const uniqueUids = {};
-        freindList = freindList.filter(obj => {
-            if (!uniqueUids[obj.uid]) {
-              uniqueUids[obj.uid] = true;
-              return true;
-            }
-            return false;
-          });
-
-        const updatedFreindsList = await FreindDb.updateOne(
-            { uid: req.body.uid }, // Query to find the document to update
-            { $set: { freinds : freindList } }, // Update to set the modified uid array
-            { upsert: true }
-        );
-        res.status(200).json(updatedFreindsList);
+            this.user_controller.addFreindUtils(req.params.freinduid, req.body.uid);
+            this.user_controller.addFreindUtils( req.body.uid, req.params.freinduid);
+        res.status(200).json({
+            success : true
+        });
     }catch(err){
         res.status(500).json({
             message : 'INTERNAL SERVER ERROR'
         })
     }
+    },
+
+
+    addFreindUtils : async (myuid, freinduid)=>{
+
+        var freindList = await FreindDb.findOne({ uid: myuid }, {_id:0, freinds : 1});
+        const userDetails = await UserDb.findOne({ uid: freinduid }, { username: 1, _id: 0, uid : 1 });
+    if(userDetails === null) throw new Error('no user exists');
+    if(freindList === null){
+        freindList = [];
+    }else
+        freindList = freindList.freinds;
+
+    freindList.push(userDetails);
+    const uniqueUids = {};
+    freindList = freindList.filter(obj => {
+        if (!uniqueUids[obj.uid]) {
+          uniqueUids[obj.uid] = true;
+          return true;
+        }
+        return false;
+      });
+
+    await FreindDb.updateOne(
+        { uid: myuid }, // Query to find the document to update
+        { $set: { freinds : freindList } }, // Update to set the modified uid array
+        { upsert: true }
+    );
+    },
+
+    getFreindList : async (req, res)=>{
+        try{
+            var freindList = await FreindDb.findOne({ uid: req.body.uid }, {_id:0, freinds : 1});
+            res.status(200).json(freindList.freinds);
+        }catch(err){
+            res.status(500).json({
+                message : "INTERNAL SERVER ERROR"
+            })
+        }
     }
 }
