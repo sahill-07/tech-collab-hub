@@ -8,14 +8,21 @@ import IconButtonMui from "../basicComponents/Button/IconButtonMui";
 import Typography from "@mui/material/Typography";
 import ConstructionIcon from '@mui/icons-material/Construction';
 import CodeIcon from '@mui/icons-material/Code';
+import { useNavigate } from "react-router-dom";
 
 const RecommendedUserMode = ({ selected, setSelected }) => {
+  const navigate = useNavigate();
   const handleGithubClick = () => {
     window.open(selected.githublink);
   };
-  const addToSavedList = () => {};
+  const addToSavedList = () => {
 
-  const openChat = () => {};
+  };
+
+  const openChat = () => {
+    // console.log(selected.uid);
+    navigate(`/chat?with=${selected.uid}`)
+  };
   if (selected === null) {
     return <></>;
   }

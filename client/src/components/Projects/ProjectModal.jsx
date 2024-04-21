@@ -6,9 +6,10 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import ChatIcon from '@mui/icons-material/Chat';
 import IconButtonMui from '../basicComponents/Button/IconButtonMui';
+import { useNavigate } from 'react-router-dom';
 
 const ProjectModal = ({selected, setSelected}) => {
-
+  const navigate = useNavigate();
   const handleGithubClick = ()=>{
     window.open(selected.repo_link)
   }
@@ -17,7 +18,7 @@ const ProjectModal = ({selected, setSelected}) => {
   }
 
   const openChat = ()=>{
-    
+    navigate(`/chat?topic=${selected.repo_name}`)
   }
     
     if(selected === null){
