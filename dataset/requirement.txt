@@ -1,0 +1,8 @@
+scikit-learn
+python-dotenv
+pandas
+openpyxl
+pymongo
+requests
+bs4
+nltk

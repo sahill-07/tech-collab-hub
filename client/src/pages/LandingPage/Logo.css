@@ -1,0 +1,75 @@
+/* .style{
+    position: relative;
+    font-size: 10vh;
+    color:#252839;
+    -webkit-text-stroke: 0.3vh #383d52;
+    text-transform: uppercase;
+}
+
+.style::before{
+    content: attr(data-text);
+    position: absolute;
+    color: #01fe87;
+    top: 0;
+    width: 0;
+    height: 100%;
+    -webkit-text-stroke: 0vh #383d52 ;
+    border-right: 2px solid #01fe87 ;
+    overflow: hidden;
+    animation: animate 6s linear infinite;
+}
+
+@keyframes animate
+{
+    0%, 10% , 100%
+     {
+        width:0;
+     }
+    70% , 90%
+    {
+        width: 90% ;
+    }
+} */
+
+.style {
+    position: relative;
+    font-size: 10vh;
+    color: #252839;
+    -webkit-text-stroke: 0.3vh #383d52;
+    text-transform: uppercase;
+}
+
+.style::before {
+    content: attr(data-text);
+    position: absolute;
+    color: #01fe87;
+    top: 0;
+    left: 0; /* Added left property to keep it aligned */
+    width: 0;
+    height: 100%;
+    -webkit-text-stroke: 0vh #383d52;
+    border-right: 2px solid #01fe87;
+    overflow: hidden;
+    animation: animate 6s linear infinite;
+}
+
+@keyframes animate {
+    0%, 10%, 100% {
+        width: 0;
+    }
+    70%, 90% {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .style {
+        font-size: 6vh;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .style {
+        font-size: 4vh;
+    }
+}

@@ -1,0 +1,17 @@
+.oddColumnsofproject > *:nth-child(even) {
+  height: 26rem;
+  @apply border aspect-auto
+}
+.oddColumnsofproject > *:nth-child(odd) {
+  height: 30rem;
+  @apply aspect-auto
+}
+
+.evenColumnsofproject > *:nth-child(odd) {
+  height: 26rem;
+  @apply border aspect-auto
+}
+.evenColumnsofproject > *:nth-child(even) {
+  height: 30rem;
+  @apply aspect-auto
+}

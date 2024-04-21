@@ -1,0 +1,32 @@
+/* CSS/Card.css */
+
+.card-content {
+  transition: box-shadow 0.3s ease; /* Add transition effect for box-shadow */
+}
+
+.card-content:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 8px 16px rgba(0, 0, 0, 0.2); /* Change box-shadow on hover */
+}
+
+.card-content:hover .text-xl {
+  color: blue; /* Change text color of description on hover */
+}
+
+
+.card-content:hover .card {
+  transform: scale(1.02); /* Scale card on hover */
+}
+
+.card-content:hover .card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.1); /* Add semi-transparent overlay on hover */
+}
+
+.card-content:hover .card:hover::after {
+  background: rgba(0, 0, 0, 0); /* Remove overlay effect when card is hovered */
+}
