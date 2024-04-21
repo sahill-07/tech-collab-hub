@@ -75,7 +75,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         validate: {
             validator: function(v) {
-                return Array.isArray(v) && v.length > 0;
+                return Array.isArray(v);
             },
             message: props => `${props.value} is not a valid array or is empty.`
         }
@@ -97,6 +97,9 @@ const userSchema = new mongoose.Schema({
         type: String
     },
     "star_earned": {
+        type : String
+    },
+    "uid" : {
         type : String
     }
     

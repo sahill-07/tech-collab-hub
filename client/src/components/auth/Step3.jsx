@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setBasicUtilsSlice } from '../../store/BasicUtilsSlice';
 import { postUser } from '../../http';
 import { setUserSlice } from '../../store/UserSlice';
+import { getAuth } from 'firebase/auth';
 
 const Step3 = ({ setStepperActiveIndex, userData, setUserData }) => {
     const dispatch = useDispatch();
@@ -45,6 +46,7 @@ const Step3 = ({ setStepperActiveIndex, userData, setUserData }) => {
             userData['experience'] = experience;
             userData['preferred_learning_resource'] = preferred_learning_resource;
             userData['tech_stack_interest'] = tech_stack_interest;
+            userData['uid'] = getAuth().currentUser.uid;
             setUserData(userData);
             setisOpenConfirmationDialogOpen(true);
         }else{

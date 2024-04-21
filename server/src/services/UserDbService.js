@@ -16,7 +16,8 @@ class UserDbService {
         area_of_interest: 'array',
         experience: 'array',
         preferred_learning_resource: 'array',
-        tech_stack_interest: 'array'
+        tech_stack_interest: 'array',
+        uid : 'string'
       };
 
 // res, req.body.email, req.body

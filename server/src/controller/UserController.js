@@ -2,18 +2,6 @@ const UserDb = require('../models/User');
 const UserDbService = require('../services/UserDbService');
 
 exports.user_controller = {
-    post : async (req, res) =>{
-        try{
-            UserDbService.addUserToDb(req.body);
-            res.status(200);
-            res.json({success: true});
-        }catch(err){
-            console.log(err);
-            res.status(400).json({
-                success: false
-            });
-        }
-    },
 
     postNewUser : async (req, res)=>{
         try{

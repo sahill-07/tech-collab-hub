@@ -18,6 +18,7 @@ export const SignUp = () => {
   const [stepperActiveIndex, setStepperActiveIndex] = useState(0);
 
   const [userdata, setUserData] = useState({
+    uid : null,
     email : null,
     username : '',
     githublink : '',
