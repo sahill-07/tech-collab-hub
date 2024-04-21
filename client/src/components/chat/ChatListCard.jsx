@@ -1,16 +1,34 @@
 import React from 'react'
+import avatarData from "../../data/Avatars.json";
 
-const ChatListCard = ({data, setSelectedChat, index}) => {
+
+const ChatListCard = ({data, setSelectedChat, index, selectedChat}) => {
     const handleClick = ()=>{
         console.log(data.uid);
         setSelectedChat({
           uid : data.uid,
-          type : 'one-one_msg'
+          type : 'one-one_msg',
+          username : data.username
         });
     }
+    const isCurrentSelected = ()=>{
+      if(selectedChat.type === 'one-one_msg' && selectedChat.uid === data.uid)
+        return true;
+      return false;
+    }
   return (
-    <div onClick={handleClick}>
-      <button className='hover:text-white hover:bg-blue-700 border border-black p-2 w-full'>{data.username}</button>
+    <div onClick={handleClick} className={`flex gap-1 items-center border ${isCurrentSelected() ? 'bg-black text-white hover:bg-gray-500':''} hover:bg-gray-200 p-1 rounded-xl`}>
+      <div className="avatar">
+        <div className="w-12 rounded-full">
+          <img src={avatarData.male[index%avatarData.male.length]}/>
+        </div>
+      </div>
+      <div>
+      <div className='flex flex-col gap-0'>
+        <h5 className='text-lg'>{data.username}</h5>
+        <p className={`${isCurrentSelected() ? 'text-white hover:text-gray-300':'text-gray-500'} -mt-1`}>Personal Chat</p>
+      </div>
+      </div>
     </div>
   )
 }

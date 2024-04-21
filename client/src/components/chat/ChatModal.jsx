@@ -115,12 +115,12 @@ const ChatModal = ({selectedChat}) => {
     }else if(chatWith.type === 'groupmessage')
       return chatWith.topic;
     else 
-      return chatWith.uid
+      return chatWith.username
   }
 
 
   return (
-    <div className="h-[99vh] flex flex-col border border-red-500">
+    <div className="h-[99vh] flex flex-col w-full">
       <span className="">chat with : {getHeading()}</span>
       <div
         id="messages"
@@ -140,7 +140,7 @@ const ChatModal = ({selectedChat}) => {
             onClick={handleSendMessage}
           />
         </div>
-        <div id="chatcard" className="overflow-y-scroll border border-blue-600 flex-1 " style={{ maxHeight: "calc(99vh - 100px)" }}>
+        <div id="chatcard" className="overflow-y-scroll flex-1 " style={{ maxHeight: "calc(99vh - 100px)" }}>
           {
             messageList.map((msg, ind)=>{
               return <ChatModalCard isMessageFromMe={uid===msg.senderuid} message={msg.message} key={ind}/>
