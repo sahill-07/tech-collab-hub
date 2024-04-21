@@ -5,6 +5,7 @@ import SendIcon from "@mui/icons-material/Send";
 import FirebaseMessageUtils from "../../utils/FirebaseMessageUtils";
 import { useSelector } from "react-redux";
 import { getDatabase, ref, get, child, push, onValue, onChildAdded } from "firebase/database";
+import { addToChatListApi } from "../../http";
 
 
 const ChatModal = () => {
@@ -42,7 +43,12 @@ const ChatModal = () => {
               ];
             });
           });
+          
+          if(messageList.length === 0){
+            addToChatListApi(chatWith); // to add server route
+          }
         }
+
       }
       getmsg();
         

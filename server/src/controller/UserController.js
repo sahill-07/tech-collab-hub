@@ -1,4 +1,5 @@
 const UserDb = require('../models/User');
+const FreindDb = require('../models/Freind');
 const UserDbService = require('../services/UserDbService');
 
 exports.user_controller = {
@@ -84,5 +85,39 @@ exports.user_controller = {
                 message : err.message
             })
         }
+    },
+
+    addFreind : async (req, res)=>{
+        try{
+
+            var freindList = await FreindDb.findOne({ uid: req.body.uid }, {_id:0, freinds : 1});
+            const userDetails = await UserDb.findOne({ uid: req.params.freinduid }, { username: 1, _id: 0, uid : 1 });
+        if(freindList === null){
+            freindList = [];
+        }else
+            freindList = freindList.freinds;
+
+        if(userDetails !== null)
+            freindList.push(userDetails);
+        const uniqueUids = {};
+        freindList = freindList.filter(obj => {
+            if (!uniqueUids[obj.uid]) {
+              uniqueUids[obj.uid] = true;
+              return true;
+            }
+            return false;
+          });
+
+        const updatedFreindsList = await FreindDb.updateOne(
+            { uid: req.body.uid }, // Query to find the document to update
+            { $set: { freinds : freindList } }, // Update to set the modified uid array
+            { upsert: true }
+        );
+        res.status(200).json(updatedFreindsList);
+    }catch(err){
+        res.status(500).json({
+            message : 'INTERNAL SERVER ERROR'
+        })
+    }
     }
 }

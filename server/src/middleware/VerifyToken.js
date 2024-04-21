@@ -4,6 +4,7 @@ const verifyToken = (req, res, next) =>{
     const token = req.headers.authorization;
         const decodeValue = admin.auth().verifyIdToken(token).then(decodedToken =>{
             const uid = decodedToken.uid;
+            req.body.uid = uid;
             req.body.email = decodedToken.email;
             req.body.USER_EMAIL = decodedToken.email;
             next();  
