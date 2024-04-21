@@ -48,7 +48,7 @@ export const Navbar = (props) => {
     <>
       <div ref={stickyRef} className="w-full flex justify-center -mt-8 z-10 top-0 sticky">
         <div  className={`flex flex-row scrollbar-hide overflow-scroll gap-3 md:gap-9  bg-white transition-all ease-in-out justify-center py-4 px-3 md:px-10 rounded-lg shadow-xl items-center md:text-xl text-gray-600 flex-wrap ${isSticky ? 'w-screen justify-between':'max-w-fit'}`}>
-          {isSticky && <img src={logo} alt="" className={`w-32 h-auto ${isSticky ? '':'hidden'}`} /> }
+          {isSticky && <img src={logo} alt="" className={`w-32 border border-black h-auto ${isSticky ? '':'hidden'}`} /> }
           <div className="flex gap-3 md:gap-9 px-1">
           
           <Link to='/' className={`${selectedItem === 0 ? 'text-purple-700':''} flex gap-1 min-w-fit items-center hover:text-purple-500 cursor-pointer`}>
