@@ -29,12 +29,12 @@ const ChatModal = ({selectedChat}) => {
     async function getmsg(){
 
       if(chatWith !== '' && chatWith !== null && uid !== null && uid !== '' && uid !== undefined){
-        setMessageList(await FirebaseMessageUtils.getMessages(chatWith, uid));
-        const path2 = `messages/${chatWith}/${uid}`;  //add observer
+        // setMessageList(await FirebaseMessageUtils.getMessages(chatWith, uid));
+        setMessageList([]);
+        const path2 = FirebaseMessageUtils.chatId(chatWith, uid);  //add observer
         const db = getDatabase();
         const messageref = ref(db, path2);
         for(const lis of listeners){
-          console.log('removing listendr ' ,lis);
           off(ref(db, lis))
         }
         setListeners([]);
@@ -46,15 +46,12 @@ const ChatModal = ({selectedChat}) => {
             const msg = snapshot.val();
             console.log(msg);
             setMessageList(prevMessageList => {
-              console.log(prevMessageList);
-              return [
-                  ...prevMessageList,
-                  {
-                    message: msg.message,
-                      createdAt: new Date(msg.createdAt),
-                      isMessageFromMe: false
-                  }
-              ];
+              const currdata = {
+                message: msg.message,
+                createdAt: msg.createdAt,
+                senderuid: msg.senderuid 
+              }
+              return FirebaseMessageUtils.addIfNotDuplicate(prevMessageList, currdata);
             });
           });
           
@@ -71,14 +68,15 @@ const ChatModal = ({selectedChat}) => {
 
   const handleSendMessage = () => {
     if(typedmessage !== ''){
-        FirebaseMessageUtils.sendMessage(typedmessage, chatWith);
+        const timestamp = new Date().getTime();
+        FirebaseMessageUtils.sendMessage(typedmessage, chatWith, uid, timestamp);
         setMessageList(prevMessageList=>{
-          prevMessageList.push({
+          const currdata = {
             message: typedmessage,
-            createdAt: new Date().getTime(),
-            isMessageFromMe: true
-          })
-          return prevMessageList;
+            createdAt: timestamp,
+            senderuid: uid
+          }
+          return FirebaseMessageUtils.addIfNotDuplicate(prevMessageList, currdata);
         })
         setTypedMessage('');
     }
@@ -86,12 +84,8 @@ const ChatModal = ({selectedChat}) => {
 
   useEffect(()=>{
     return () => {
-      console.log('running unmounting');
-      console.log(listeners);
       for(const lis of listeners)
         off(ref(getDatabase(), lis))
-
-
     };
   },[])
 
@@ -120,7 +114,7 @@ const ChatModal = ({selectedChat}) => {
         <div id="chatcard" className="overflow-y-scroll border border-blue-600 flex-1 " style={{ maxHeight: "calc(99vh - 100px)" }}>
           {
             messageList.map((msg, ind)=>{
-              return <span id={ind}><ChatModalCard isMessageFromMe={msg.isMessageFromMe} message={msg.message} key={ind}/></span>
+              return <ChatModalCard isMessageFromMe={uid===msg.senderuid} message={msg.message} key={ind}/>
             })
           }
         </div>
