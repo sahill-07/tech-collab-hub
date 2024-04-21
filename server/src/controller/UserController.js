@@ -165,13 +165,12 @@ exports.user_controller = {
 
     saveRepo : async (req, res)=>{
         try{
-            console.log('called');
             var savedRepo = await UserDb.findOne({ email:  req.body.email}, {_id:0, saved_repo : 1});
             if(savedRepo.saved_repo === undefined || savedRepo.saved_repo === null)
                 savedRepo = [];
             else 
                 savedRepo = savedRepo.saved_repo;
-            savedRepo.push(req.params.repo_link);
+            savedRepo.push(req.body.repo_link);
             savedRepo = Array.from(new Set(savedRepo));
             await UserDb.updateOne(
                 {email : req.body.email},

@@ -3,13 +3,15 @@ import Lottie from "lottie-react";
 import discussion_icon from "../assets/discussion.json";
 import "../styles/Homepage.css";
 import { SearchBox } from "../components/SearchBox";
-import { Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
+import ChatIcon from '@mui/icons-material/Chat';
 import { useSelector } from "react-redux";
+import { Button } from "@mui/material";
 
 export const Homepage = () => {
 
-  const {COLLEGE_NAME} = useSelector((state)=>state.BookSearchSlice);
+  // const {COLLEGE_NAME} = useSelector((state)=>state.BookSearchSlice);
   const location = useLocation();
   useEffect(()=>{
     const searchParams = new URLSearchParams(location.search);
@@ -26,7 +28,12 @@ export const Homepage = () => {
               <h5>- Get Best recommendation on project</h5>
               <h5>- Build Connection & grow more</h5>
             </div>
-            <SearchBox />
+            {/* <SearchBox /> */}
+            <Link to='/chat'>
+              <Button startIcon={<ChatIcon/>} variant="outlined" className="bg-white" sx={{backgroundColor : 'white', width :144}}>
+                Chat
+              </Button>
+            </Link>
           </div>
           <div className="flex justify-center">
             <Lottie

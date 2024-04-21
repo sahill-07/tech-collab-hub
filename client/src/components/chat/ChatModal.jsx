@@ -143,7 +143,8 @@ const ChatModal = ({selectedChat}) => {
     }
   };
 
-
+  if(chatWith === null || chatWith === undefined)
+    return <></>
   return (
     <div className="h-[99vh] flex flex-col w-full shadow-md">
       <div className="shadow-lg gap-1 p-3 flex items-center text-xl">

@@ -20,13 +20,13 @@ const ProjectModal = ({selected, setSelected}) => {
     window.open(selected.repo_link)
   }
   const addToSavedList = ()=>{
-    addRepoToSavedList(selected.repo_name).then(res=>{
+    addRepoToSavedList(selected.repo_link).then(res=>{
       if(res.status === 200){
         let sav = [];
         if(store.getState().UserSlice.saved_repo.length > 0)
         sav = [...store.getState().UserSlice.saved_repo];
         if(!sav.includes(selected.repo_name))
-          sav.push(selected.repo_name);
+          sav.push(selected.repo_link);
         dispatch(setUserSlice({
           saved_repo : sav
         }))
