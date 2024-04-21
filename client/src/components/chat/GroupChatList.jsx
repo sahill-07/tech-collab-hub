@@ -6,7 +6,8 @@ const GroupChatList = ({data, setSelectedChat, index}) => {
     const handleClick = ()=>{
         setSelectedChat({
           topic : data,
-          type : 'groupmessage'
+          type : 'groupmessage',
+          icon : avatarData.group[index%avatarData.group.length]
         });
     }
     useEffect(()=>{

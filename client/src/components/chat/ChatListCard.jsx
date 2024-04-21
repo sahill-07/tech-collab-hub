@@ -8,10 +8,12 @@ const ChatListCard = ({data, setSelectedChat, index, selectedChat}) => {
         setSelectedChat({
           uid : data.uid,
           type : 'one-one_msg',
-          username : data.username
+          username : data.username,
+          icon : avatarData.male[index%avatarData.male.length]
         });
     }
     const isCurrentSelected = ()=>{
+      if(selectedChat === null || selectedChat === undefined) return false;
       if(selectedChat.type === 'one-one_msg' && selectedChat.uid === data.uid)
         return true;
       return false;

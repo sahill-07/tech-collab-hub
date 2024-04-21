@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import ChatModalCard from "./ChatModalCard";
 import IconButtonMui from "../basicComponents/Button/IconButtonMui";
-import SendIcon from "@mui/icons-material/Send";
 import FirebaseMessageUtils from "../../utils/FirebaseMessageUtils";
 import { useSelector } from "react-redux";
 import { getDatabase, ref, off, onChildAdded } from "firebase/database";
+import avatarData from "../../data/Avatars.json";
 import { addToChatListApi, addToGroupChatListApi } from "../../http";
+import { IconButton, TextField } from "@mui/material";
+import SendIcon from '@mui/icons-material/Send';
 
 
 const ChatModal = ({selectedChat}) => {
@@ -118,29 +120,70 @@ const ChatModal = ({selectedChat}) => {
       return chatWith.username
   }
 
+  const getSubtitle = ()=>{
+    if(chatWith === null)
+      return '';
+    else if(chatWith.type === 'groupmessage')
+      return 'Group Message';
+    else 
+      return 'Personal Chat'
+  }
+
+  const getIcon = ()=>{
+    if(chatWith === null || chatWith.icon === undefined || chatWith.icon === null){
+      return avatarData.group[0];
+    }else {
+      return chatWith.icon
+    }
+  }
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleSendMessage();
+    }
+  };
+
 
   return (
-    <div className="h-[99vh] flex flex-col w-full">
-      <span className="">chat with : {getHeading()}</span>
+    <div className="h-[99vh] flex flex-col w-full shadow-md">
+      <div className="shadow-lg gap-1 p-3 flex items-center text-xl">
+        <div className="avatar">
+          <div className="w-12 rounded-full border">
+            <img src={getIcon()}/>
+          </div>
+        </div>
+        <div>
+          <p className="">{getHeading()}</p>
+          <p className="text-sm -mt-1">{getSubtitle()}</p>
+        </div>
+      </div>
       <div
         id="messages"
         className="flex flex-1 px-1 flex-col-reverse justify-self-end flex-wrap-reverse"
       >
         <div className="flex w-full mt-2">
-          <input
-            type="text"
-            value={typedmessage}
-            onChange={(e)=>setTypedMessage(e.target.value)}
-            placeholder="Type Something..."
-            className="flex-1 px-1 border border-black"
-          />
-          <IconButtonMui
-            text={"Send"}
-            icon={<SendIcon />}
-            onClick={handleSendMessage}
-          />
+        <TextField
+          required
+          fullWidth
+          placeholder="Type Something..."
+          id="filled-required"
+          value={typedmessage}
+          onChange={(e)=>setTypedMessage(e.target.value)}
+          label="Message"
+          onKeyPress={handleKeyPress}
+          defaultValue="Hello World"
+          variant="outlined"
+          InputProps={{
+            endAdornment: (
+              <IconButton onClick={handleSendMessage}>
+                <SendIcon />
+              </IconButton>
+            ),
+          }}
+        />
+
         </div>
-        <div id="chatcard" className="overflow-y-scroll flex-1 " style={{ maxHeight: "calc(99vh - 100px)" }}>
+        <div id="chatcard" className="overflow-y-scroll flex-1 " style={{ maxHeight: "calc(99vh - 201px)" }}>
           {
             messageList.map((msg, ind)=>{
               return <ChatModalCard isMessageFromMe={uid===msg.senderuid} message={msg.message} key={ind}/>
