@@ -5,7 +5,7 @@ import SendIcon from "@mui/icons-material/Send";
 import FirebaseMessageUtils from "../../utils/FirebaseMessageUtils";
 import { useSelector } from "react-redux";
 import { getDatabase, ref, off, onChildAdded } from "firebase/database";
-import { addToChatListApi } from "../../http";
+import { addToChatListApi, addToGroupChatListApi } from "../../http";
 
 
 const ChatModal = ({selectedChat}) => {
@@ -14,24 +14,40 @@ const ChatModal = ({selectedChat}) => {
   const { uid } = useSelector(state=>state.UserSlice);
   const [typedmessage, setTypedMessage] = useState('');
   const [listeners, setListeners] = useState([]);
+  // const [path, setPath] = useState(null);
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const chatWithParam = params.get("with");
-    if(chatWithParam !== '' && chatWithParam !== null && selectedChat === null)
-        setChatWith(chatWithParam);
+    const topicParam = params.get("topic");
+    if(chatWithParam !== '' && chatWithParam !== null && selectedChat === null){
+      setChatWith({
+        type : 'one-one_msg',
+        uid : chatWithParam
+      })
+    }else if(topicParam !== '' && topicParam !== null){
+      setChatWith({
+        type : "groupmessage",
+        topic : topicParam
+      })
+    }
   }, []);
 
   useEffect(()=>{
-    if(selectedChat !== null)
-    setChatWith(selectedChat)
+    if(selectedChat !== null){
+      setChatWith(selectedChat);
+    }
   },[selectedChat])
+
+
   useEffect(()=>{
     async function getmsg(){
-
+      console.log(chatWith);
       if(chatWith !== '' && chatWith !== null && uid !== null && uid !== '' && uid !== undefined){
         // setMessageList(await FirebaseMessageUtils.getMessages(chatWith, uid));
         setMessageList([]);
-        const path2 = FirebaseMessageUtils.chatId(chatWith, uid);  //add observer
+        console.log(chatWith);
+        let path2 = FirebaseMessageUtils.generatePath(chatWith);
+        console.log(path2);
         const db = getDatabase();
         const messageref = ref(db, path2);
         for(const lis of listeners){
@@ -56,7 +72,11 @@ const ChatModal = ({selectedChat}) => {
           });
           
           if(messageList.length === 0){
-            addToChatListApi(chatWith); // to add server route
+            if(chatWith.type === 'groupmessage'){
+              addToGroupChatListApi(chatWith.topic)
+            }else{ //one to one chat
+              addToChatListApi(chatWith.uid); // to add server route
+            }
           }
         }
 
@@ -69,7 +89,7 @@ const ChatModal = ({selectedChat}) => {
   const handleSendMessage = () => {
     if(typedmessage !== ''){
         const timestamp = new Date().getTime();
-        FirebaseMessageUtils.sendMessage(typedmessage, chatWith, uid, timestamp);
+        FirebaseMessageUtils.sendMessage(typedmessage, uid, timestamp, FirebaseMessageUtils.generatePath(chatWith));
         setMessageList(prevMessageList=>{
           const currdata = {
             message: typedmessage,
@@ -89,10 +109,19 @@ const ChatModal = ({selectedChat}) => {
     };
   },[])
 
+  const getHeading = ()=>{
+    if(chatWith === null){
+      return ''
+    }else if(chatWith.type === 'groupmessage')
+      return chatWith.topic;
+    else 
+      return chatWith.uid
+  }
+
 
   return (
     <div className="h-[99vh] flex flex-col border border-red-500">
-      <span className="">chat with : {chatWith}</span>
+      <span className="">chat with : {getHeading()}</span>
       <div
         id="messages"
         className="flex flex-1 px-1 flex-col-reverse justify-self-end flex-wrap-reverse"

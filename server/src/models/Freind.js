@@ -7,7 +7,8 @@ const FreindSchema = new mongoose.Schema({
         unique : true,
         required : true
     },
-    freinds : []
+    freinds : [],
+    groupchat : []
   });
 
 module.exports = mongoose.model(DATABASE_TABLE_NAME, FreindSchema);

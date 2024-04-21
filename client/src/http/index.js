@@ -57,6 +57,7 @@ export const getProjectDetailsById = async (id)=> await api(`/project/projectid/
 export const postUser = async (data)=> await api('/user', data, 'post');
 export const getUserDetails = async ()=> await api('/user/userDetail', '', 'get');
 export const addToChatListApi = async (freinduid)=> await api(`/user/addToChatList/${freinduid}`, {}, 'post');
+export const addToGroupChatListApi = async (freinduid)=> await api(`/user/addToGroupChatList/${freinduid}`, {}, 'post');
 export const getFreindList = async ()=> await api('/user/getFreindList', '', 'get');
 
 export const getUserDetailsUsingid = async (id)=> await api('/user/userDetail/' + id, "", 'get');

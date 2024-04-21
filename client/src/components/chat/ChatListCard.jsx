@@ -3,7 +3,10 @@ import React from 'react'
 const ChatListCard = ({data, setSelectedChat, index}) => {
     const handleClick = ()=>{
         console.log(data.uid);
-        setSelectedChat(data.uid);
+        setSelectedChat({
+          uid : data.uid,
+          type : 'one-one_msg'
+        });
     }
   return (
     <div onClick={handleClick}>

@@ -131,8 +131,33 @@ exports.user_controller = {
 
     getFreindList : async (req, res)=>{
         try{
-            var freindList = await FreindDb.findOne({ uid: req.body.uid }, {_id:0, freinds : 1});
-            res.status(200).json(freindList.freinds);
+            var freindList = await FreindDb.findOne({ uid: req.body.uid }, {_id:0, freinds : 1, groupchat : 1});
+            res.status(200).json(freindList);
+        }catch(err){
+            res.status(500).json({
+                message : "INTERNAL SERVER ERROR"
+            })
+        }
+    },
+
+    addGroupChat : async (req, res)=>{
+        try{
+            const myuid = req.body.uid;
+
+            var groupChatList = await FreindDb.findOne({ uid:  myuid}, {_id:0, groupchat : 1});
+            if(groupChatList === null)
+                groupChatList = [];
+            else groupChatList = groupChatList.groupchat
+            groupChatList.push(req.params.topic)
+            groupChatList = Array.from(new Set(groupChatList));
+            await FreindDb.updateOne(
+                { uid: myuid }, // Query to find the document to update
+                { $set: { groupchat : groupChatList } }, // Update to set the modified uid array
+                { upsert: true }
+            );
+            res.status(200).json({
+                success : true 
+            })
         }catch(err){
             res.status(500).json({
                 message : "INTERNAL SERVER ERROR"
